@@ -266,18 +266,6 @@ export default async function Home() {
                 </li>
               </ul>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Project Team</h3>
-              <p className="text-sm text-gray-400 mb-2">
-                Kumkum Kumari<br />
-                Mayank Kumar<br />
-                Om Yadav
-              </p>
-              <p className="text-xs text-gray-500 mt-4">
-                GNIOT, Greater Noida<br />
-                AKTU, Lucknow
-              </p>
-            </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
             <p>&copy; 2025 Legal Awareness Platform. All rights reserved.</p>
