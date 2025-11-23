@@ -162,7 +162,7 @@ export default function ConstitutionPage() {
 
             {/* Navigation between articles */}
             <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-200">
-              {selectedArticle > 0 && (
+              {selectedArticle !== null && selectedArticle > 0 && (
                 <button
                   onClick={() => setSelectedArticle(selectedArticle - 1)}
                   className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition"
@@ -172,7 +172,7 @@ export default function ConstitutionPage() {
                 </button>
               )}
               <div className="flex-1" />
-              {currentPart && selectedArticle < currentPart.articlesList.length - 1 && (
+              {currentPart && selectedArticle !== null && selectedArticle < currentPart.articlesList.length - 1 && (
                 <button
                   onClick={() => setSelectedArticle(selectedArticle + 1)}
                   className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition"
