@@ -53,7 +53,8 @@ export function useUserStats() {
           learningProgress: data.learningProgress || {},
         };
         setStats(statsData);
-        updateStreak(statsData);
+        // Update streak after fetching stats
+        await updateStreakOnVisit(statsData);
       }
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -123,7 +124,7 @@ export function useUserStats() {
   }, [isSignedIn, user?.id]);
 
   // Update streak based on last visit
-  const updateStreak = (currentStats: UserStats) => {
+  const updateStreakOnVisit = async (currentStats: UserStats) => {
     const today = new Date().toDateString();
     const lastVisit = new Date(currentStats.lastVisitDate).toDateString();
     
@@ -152,7 +153,7 @@ export function useUserStats() {
       lastVisitDate: new Date().toISOString(),
     };
     
-    saveStats(updatedStats);
+    await saveStats(updatedStats);
   };
 
   // Increment articles read
