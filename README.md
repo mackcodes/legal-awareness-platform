@@ -76,8 +76,12 @@ A comprehensive digital platform for accessing and understanding India's Constit
 
 **State Management:**
 - React Hooks (useState, useEffect, useContext)
-- localStorage for user stats
+- MongoDB for persistent user stats
 - Custom hooks (useTranslate, useUserStats)
+
+**Database:**
+- MongoDB Atlas (cloud database)
+- Mongoose ODM
 
 **APIs:**
 - OpenAI API (quiz generation)
@@ -90,7 +94,9 @@ A comprehensive digital platform for accessing and understanding India's Constit
 - Node.js 18.17 or later
 - npm, yarn, or pnpm
 - Clerk account (free tier available)
+- MongoDB Atlas account (free tier available)
 - OpenAI API key (for quiz feature)
+- Google Translate API key (for translation feature)
 
 ### Installation
 
@@ -122,8 +128,14 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
 
-# OpenAI API (for AI quiz generation)
-OPENAI_API_KEY=sk-your_openai_key_here
+# MongoDB Database
+MONGODB_URI=mongodb+srv://username:password@cluster.xxxxx.mongodb.net/legal-awareness?retryWrites=true&w=majority
+
+# Google Translate API
+GOOGLE_TRANSLATE_API_KEY=your_google_translate_api_key_here
+
+# Gemini AI API (Alternative to OpenAI)
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 4. **Get your API keys:**
@@ -134,10 +146,24 @@ OPENAI_API_KEY=sk-your_openai_key_here
 - Navigate to **API Keys** section
 - Copy **Publishable Key** and **Secret Key**
 
-**OpenAI Key:**
-- Go to [platform.openai.com](https://platform.openai.com)
-- Sign up/Login and go to API Keys
-- Create a new secret key
+**MongoDB Setup:**
+- Go to [mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+- Create a free M0 cluster
+- Create database user with password
+- Whitelist IP: `0.0.0.0/0` (allow from anywhere)
+- Get connection string and replace `<username>`, `<password>`, and add database name
+- Format: `mongodb+srv://username:password@cluster.xxxxx.mongodb.net/legal-awareness?retryWrites=true&w=majority`
+
+**Google Translate API:**
+- Go to [Google Cloud Console](https://console.cloud.google.com)
+- Create a new project or select existing
+- Enable **Cloud Translation API**
+- Create credentials (API Key)
+- Copy the API key
+
+**Gemini API (for AI quiz generation):**
+- Go to [Google AI Studio](https://aistudio.google.com/app/apikey)
+- Create API key
 - Copy and paste into `.env.local`
 
 5. **Run the development server:**
@@ -164,7 +190,9 @@ legal-awareness-platform/
 │   │   └── forum/                   # Discussion forum
 │   ├── api/
 │   │   ├── generate-quiz/           # AI quiz generation endpoint
-│   │   └── translate/               # Translation endpoint
+│   │   ├── translate/               # Translation endpoint
+│   │   ├── user-stats/              # User statistics API
+│   │   └── migrate-stats/           # Stats migration API
 │   ├── components/                  # Reusable components
 │   │   └── LanguageSelector.tsx
 │   ├── contexts/                    # React contexts
@@ -175,6 +203,10 @@ legal-awareness-platform/
 │   ├── hooks/                       # Custom hooks
 │   │   ├── useTranslate.ts
 │   │   └── useUserStats.ts
+│   ├── lib/                         # Utilities
+│   │   └── mongodb.ts               # MongoDB connection
+│   ├── models/                      # Database models
+│   │   └── UserStats.ts             # User stats schema
 │   ├── layout.tsx                   # Root layout
 │   ├── page.tsx                     # Landing page
 │   └── globals.css                  # Global styles
@@ -223,7 +255,9 @@ git push origin main
 - `NEXT_PUBLIC_CLERK_SIGN_UP_URL`
 - `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`
 - `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL`
-- `OPENAI_API_KEY`
+- `MONGODB_URI`
+- `GOOGLE_TRANSLATE_API_KEY`
+- `GEMINI_API_KEY`
 
 Your app will be live at `https://your-app.vercel.app` 🎉
 
@@ -245,14 +279,16 @@ Your app will be live at `https://your-app.vercel.app` 🎉
   - Quiz attempts and scores
   - Forum participation
   - Learning progress by topic
-- Data persisted in localStorage
-- Synced with user authentication
+- Data persisted in MongoDB
+- Real-time syncing across devices
+- Automatic migration from localStorage to database
 
 ### AI Quiz Generation
-- OpenAI GPT-3.5/4 integration
+- Google Gemini AI integration
 - Generates questions based on topic and difficulty
 - Multiple-choice format with 4 options
 - Instant feedback on answers
+- Smart question variation
 
 ### Search Functionality
 - Real-time filtering across Constitution and Acts
@@ -294,14 +330,16 @@ This project is developed as part of academic curriculum at GNIOT.
 - Legal acts information from Ministry of Law and Justice
 - Icons by [Lucide](https://lucide.dev)
 - UI inspiration from modern web design principles
-- OpenAI for AI-powered quiz generation
+- Google Gemini AI for quiz generation
+- Google Cloud Translation API for multilingual support
 - Clerk for seamless authentication
+- MongoDB Atlas for cloud database hosting
 
 ## 📞 Support
 
 For issues, questions, or suggestions:
-- Open an issue on GitHub
-- Contact: [Your contact email]
+- Open an issue on [GitHub](https://github.com/mackcodes/legal-awareness-platform/issues)
+- Star the repo if you find it helpful! ⭐
 
 ## 🔮 Roadmap
 
