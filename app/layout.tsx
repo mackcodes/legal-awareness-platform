@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from '@clerk/nextjs';
 import { TranslationProvider } from './contexts/TranslationContext';
+import { Analytics } from '@vercel/analytics/react';
 import { Poppins, Crimson_Pro } from 'next/font/google';
 import "./globals.css";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           <TranslationProvider>
             {children}
           </TranslationProvider>
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
