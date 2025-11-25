@@ -14,11 +14,10 @@ export interface IUserStats {
   learningProgress: Map<string, number>;
   // Enhanced quiz statistics
   bestQuizScore: number;
-  totalHintsUsed: number;
+  totalPoints: number;
   totalQuizTime: number; // Total time spent on quizzes in seconds
   quizStreak: number; // Consecutive days with at least one quiz
   lastQuizDate?: Date;
-  favoriteTopics: string[]; // Most frequently attempted topics
   createdAt: Date;
   updatedAt: Date;
 }
