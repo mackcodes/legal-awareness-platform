@@ -130,7 +130,7 @@ export default function ActsPage() {
     <div className="min-h-screen bg-gray-50 bg-law-pattern">
       <ResponsiveNav currentPage="acts" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 font-playfair">{keyLegalActsText}</h1>
           <p className="text-base sm:text-lg text-gray-600">{essentialLawsText}</p>

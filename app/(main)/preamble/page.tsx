@@ -111,7 +111,7 @@ export default function PreamblePage() {
     <div className="min-h-screen bg-gray-50 bg-constitution-lines">
       <ResponsiveNav currentPage="preamble" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">

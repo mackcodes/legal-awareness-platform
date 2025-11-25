@@ -5,7 +5,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-white bg-justice-dots">
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
         <div className="text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6 border border-blue-200">
@@ -63,7 +63,7 @@ export default async function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gray-50 rounded-3xl bg-law-pattern">
+      <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-gray-50 rounded-3xl bg-law-pattern">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 font-playfair">
             Everything You Need to Know
@@ -136,7 +136,7 @@ export default async function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="bg-blue-600 rounded-3xl p-12 md:p-16 shadow-sm">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div className="group">
@@ -156,7 +156,7 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="bg-gray-900 rounded-3xl p-12 md:p-16 text-center shadow-sm bg-scales-pattern relative overflow-hidden">
           <div className="relative z-10">
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 font-playfair">
@@ -178,7 +178,7 @@ export default async function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-300 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">

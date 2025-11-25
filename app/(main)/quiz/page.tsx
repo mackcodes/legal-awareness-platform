@@ -588,7 +588,7 @@ export default function QuizPage() {
     <div className="min-h-screen bg-gray-50 bg-law-pattern">
       <ResponsiveNav currentPage="quiz" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-12">
+      <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-12">
         <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6 order-2 lg:order-1">

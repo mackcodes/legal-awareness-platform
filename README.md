@@ -2,7 +2,7 @@
 
 > **Empowering Citizens with Legal Knowledge**
 
-A comprehensive digital platform for accessing and understanding India's Constitution and key legal acts, built with modern web technologies. Features bilingual support (English/Hindi), AI-powered quizzes, traffic fine information, and community discussions.
+A comprehensive digital platform for accessing and understanding India's Constitution and key legal acts, built with modern web technologies. Features AI-powered legal chatbot, bilingual support (English/Hindi), intelligent quizzes, traffic fine information, emergency helplines, and community discussions.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.0.3-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
@@ -10,6 +10,22 @@ A comprehensive digital platform for accessing and understanding India's Constit
 [![Clerk Auth](https://img.shields.io/badge/Clerk-Auth-6c47ff)](https://clerk.com/)
 
 ## ✨ Features
+
+### 🤖 AI Legal Assistant Chatbot
+- **24/7 AI-powered legal help** using Google Gemini 2.0 Flash
+- Ask questions about Indian Constitution, legal acts, and rights
+- **Emergency helpline database** with 10+ national helplines
+- **State-wise traffic helpline numbers** for 15+ states
+- **Challan contesting guidance** with step-by-step procedures for 8+ states
+- Bilingual support (English/Hindi)
+- Clean formatted responses with headings and bullet points
+- Compact and responsive design for all devices
+- Simplify complex legal text feature
+- Knowledge base covering:
+  - Constitutional articles and fundamental rights
+  - 10+ key Indian acts (RTI, Consumer Protection, IT Act, etc.)
+  - Traffic rules and violation procedures
+  - Legal remedies and citizen rights
 
 ### 🔐 Authentication & User Management
 - Secure user authentication with Clerk
@@ -36,7 +52,7 @@ A comprehensive digital platform for accessing and understanding India's Constit
 
 ### 🧠 AI-Powered Quiz System
 - 26+ quiz topics across Constitution and Acts
-- AI-generated questions via OpenAI integration
+- AI-generated questions via Google Gemini integration
 - Multiple difficulty levels (Easy, Medium, Hard)
 - Customizable question count (3-30 questions)
 - Random quiz feature with surprise topics
@@ -53,11 +69,12 @@ A comprehensive digital platform for accessing and understanding India's Constit
 - Share experiences and ask questions
 
 ### 📱 User Experience
-- Fully responsive design (mobile, tablet, desktop)
-- Dark mode support
-- Beautiful gradients and animations
-- Accessible navigation
-- Fast performance with Next.js 15
+- Fully responsive design (mobile, tablet, desktop, ultra-wide displays)
+- Max-width optimized for 1536px displays
+- Beautiful gradients and glass morphism effects
+- Accessible navigation with mobile-first approach
+- Fast performance with Next.js 15 and Turbopack
+- Smooth animations and transitions
 
 ## 🛠️ Tech Stack
 
@@ -84,8 +101,8 @@ A comprehensive digital platform for accessing and understanding India's Constit
 - Mongoose ODM
 
 **APIs:**
-- OpenAI API (quiz generation)
-- Google Translate API (translations)
+- Google Gemini 2.0 Flash API (AI chatbot & quiz generation)
+- Google Translate API (bilingual translations)
 
 ## 🚀 Getting Started
 
@@ -95,8 +112,8 @@ A comprehensive digital platform for accessing and understanding India's Constit
 - npm, yarn, or pnpm
 - Clerk account (free tier available)
 - MongoDB Atlas account (free tier available)
-- OpenAI API key (for quiz feature)
-- Google Translate API key (for translation feature)
+- Google Gemini API key (for AI chatbot and quiz features)
+- Google Translate API key (for bilingual translation)
 
 ### Installation
 
@@ -189,11 +206,15 @@ legal-awareness-platform/
 │   │   ├── quiz/                    # Quiz system
 │   │   └── forum/                   # Discussion forum
 │   ├── api/
+│   │   ├── constitution-chat/       # AI chatbot endpoint (Gemini)
 │   │   ├── generate-quiz/           # AI quiz generation endpoint
 │   │   ├── translate/               # Translation endpoint
 │   │   ├── user-stats/              # User statistics API
 │   │   └── migrate-stats/           # Stats migration API
 │   ├── components/                  # Reusable components
+│   │   ├── ConstitutionChatbot.tsx  # AI legal assistant
+│   │   ├── ResponsiveNav.tsx        # Navigation component
+│   │   ├── ClerkHeader.tsx          # Header with auth
 │   │   └── LanguageSelector.tsx
 │   ├── contexts/                    # React contexts
 │   │   └── TranslationContext.tsx
@@ -283,6 +304,24 @@ Your app will be live at `https://your-app.vercel.app` 🎉
 - Real-time syncing across devices
 - Automatic migration from localStorage to database
 
+### AI Legal Chatbot
+- **Google Gemini 2.0 Flash** powers real-time legal assistance
+- Comprehensive knowledge base with:
+  - Indian Constitution articles and explanations
+  - 10+ key legal acts (RTI, Consumer Protection, Motor Vehicles, IT Act, etc.)
+  - Emergency helplines (Police, Women Helpline, Child Helpline, etc.)
+  - State-wise traffic helpline numbers
+  - Challan contesting procedures for multiple states
+- Smart message formatting:
+  - Headings with gradient styling
+  - Bullet points with clean formatting
+  - Bold text for emphasis
+  - Phone numbers with clickable links
+- Bilingual responses (English/Hindi)
+- Simplify complex legal text feature
+- Responsive design with collapsible interface
+- Suggested questions for quick access
+
 ### AI Quiz Generation
 - Google Gemini AI integration
 - Generates questions based on topic and difficulty
@@ -343,13 +382,18 @@ For issues, questions, or suggestions:
 
 ## 🔮 Roadmap
 
+- [x] AI-powered legal chatbot with Gemini 2.0 Flash
+- [x] Emergency and traffic helpline database
+- [x] Bilingual support (English/Hindi)
+- [x] Responsive design for all devices
 - [ ] Mobile app (React Native)
-- [ ] More regional languages
+- [ ] More regional languages (Tamil, Telugu, Bengali, etc.)
 - [ ] Video explanations of key articles
 - [ ] Legal document templates
 - [ ] Case law database
 - [ ] Lawyer consultation feature
 - [ ] Offline mode with PWA
+- [ ] Voice-based legal assistant
 
 ---
 

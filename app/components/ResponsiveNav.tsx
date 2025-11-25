@@ -45,17 +45,22 @@ export default function ResponsiveNav({ currentPage }: ResponsiveNavProps) {
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-white/80 backdrop-blur-lg border-b border-blue-100 sticky top-0 z-50 shadow-sm">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
-            <Scale className="h-7 w-7 sm:h-8 sm:w-8 text-blue-600" />
-            <span className="text-lg sm:text-xl font-bold text-gray-900 hidden sm:inline">Legal Awareness</span>
+          <Link href="/" className="flex items-center space-x-3 flex-shrink-0 group">
+            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-xl shadow-lg group-hover:shadow-xl transition-all">
+              <Scale className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
+            </div>
+            <div className="hidden sm:block">
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Legal Help</span>
+              <p className="text-xs text-gray-500 -mt-1">Know Your Rights</p>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-6">
+          <div className="hidden lg:flex items-center space-x-8">
             {navItems.map((item) => (
               item.key === "quiz" ? (
                 <Link
@@ -63,9 +68,9 @@ export default function ResponsiveNav({ currentPage }: ResponsiveNavProps) {
                   href={item.href}
                   className={`${
                     item.key === currentPage
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-                      : "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"
-                  } px-5 py-2.5 rounded-full font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center space-x-2`}
+                      ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg"
+                      : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 shadow-md"
+                  } px-6 py-2.5 rounded-full font-semibold hover:shadow-xl transition-all duration-300 flex items-center space-x-2 transform hover:scale-105`}
                 >
                   <Award className="h-4 w-4" />
                   <span>{item.text}</span>
@@ -76,16 +81,18 @@ export default function ResponsiveNav({ currentPage }: ResponsiveNavProps) {
                   href={item.href}
                   className={`${
                     item.key === currentPage
-                      ? "text-blue-600 font-medium"
-                      : "text-gray-600 hover:text-blue-600"
-                  } transition-colors`}
+                      ? "text-blue-600 font-semibold border-b-2 border-blue-600"
+                      : "text-gray-700 hover:text-blue-600 font-medium"
+                  } transition-all duration-200 pb-1`}
                 >
                   {item.text}
                 </Link>
               )
             ))}
             <LanguageSelector />
-            <UserButton afterSignOutUrl="/" />
+            <div className="pl-2 border-l border-gray-200">
+              <UserButton afterSignOutUrl="/" />
+            </div>
           </div>
 
           {/* Mobile: Quiz link + Hamburger */}
@@ -95,9 +102,9 @@ export default function ResponsiveNav({ currentPage }: ResponsiveNavProps) {
               href="/quiz" 
               className={`${
                 currentPage === "quiz" 
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white" 
-                  : "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"
-              } px-4 py-2 rounded-full text-sm font-semibold shadow-md hover:shadow-lg transition-all duration-200 flex items-center space-x-1.5`}
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg" 
+                  : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 shadow-md"
+              } px-4 py-2 rounded-full text-sm font-semibold hover:shadow-lg transition-all duration-300 flex items-center space-x-1.5 transform hover:scale-105`}
             >
               <Award className="h-4 w-4" />
               <span>{quizText}</span>
@@ -117,24 +124,24 @@ export default function ResponsiveNav({ currentPage }: ResponsiveNavProps) {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div className="lg:hidden bg-white/95 backdrop-blur-lg border-t border-blue-100 shadow-xl">
           <div className="px-4 py-3 space-y-2">
             {mobileMenuItems.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
                 onClick={closeMobileMenu}
-                className={`block px-4 py-3 rounded-lg transition-colors ${
+                className={`block px-4 py-3 rounded-xl transition-all duration-200 ${
                   item.key === currentPage
-                    ? "bg-blue-50 text-blue-600 font-medium"
-                    : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    ? "bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 font-semibold shadow-sm"
+                    : "text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:text-blue-600 font-medium"
                 }`}
               >
                 {item.text}
               </Link>
             ))}
-            <div className="pt-3 border-t border-gray-200 flex items-center justify-between px-4">
-              <span className="text-sm text-gray-600">Account</span>
+            <div className="pt-3 border-t border-blue-100 flex items-center justify-between px-4">
+              <span className="text-sm font-medium text-gray-600">Account</span>
               <UserButton afterSignOutUrl="/" />
             </div>
           </div>
