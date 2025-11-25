@@ -3,10 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { UserButton } from "@clerk/nextjs";
 import { Scale, ScrollText, ChevronDown, ChevronUp } from "lucide-react";
-import LanguageSelector from "../../components/LanguageSelector";
 import { useTranslate } from "../../hooks/useTranslate";
+import ResponsiveNav from "../../components/ResponsiveNav";
 
 export default function PreamblePage() {
   const [showKeyFeatures, setShowKeyFeatures] = useState(false);
@@ -110,48 +109,28 @@ export default function PreamblePage() {
   
   return (
     <div className="min-h-screen bg-gray-50 bg-constitution-lines">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <Scale className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">Legal Awareness</span>
-            </Link>
-            <div className="flex items-center space-x-6">
-              <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">{dashboardText}</Link>
-              <Link href="/preamble" className="text-blue-600 font-medium">{preambleText}</Link>
-              <Link href="/constitution" className="text-gray-600 hover:text-blue-600 transition-colors">{constitutionText}</Link>
-              <Link href="/acts" className="text-gray-600 hover:text-blue-600 transition-colors">{actsText}</Link>
-              <Link href="/quiz" className="text-gray-600 hover:text-blue-600 transition-colors">{quizText}</Link>
-              <Link href="/forum" className="text-gray-600 hover:text-blue-600 transition-colors">{forumText}</Link>
-              <LanguageSelector />
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </div>
-        </div>
-      </nav>
+      <ResponsiveNav currentPage="preamble" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-            <ScrollText className="h-4 w-4" />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <ScrollText className="h-3 w-3 sm:h-4 sm:w-4" />
             <span>{soulOfConstitutionText}</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-4 font-playfair">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gray-900 mb-3 sm:mb-4 font-playfair">
             {preambleOfIndiaText}
           </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-4">
             {preambleDescText}
           </p>
         </div>
 
         {/* Preamble Images */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-8 mb-8 sm:mb-12">
           {/* English Preamble */}
-          <div className="bg-white rounded-xl shadow-2xl p-6 border-4 border-orange-200">
-            <h2 className="text-2xl font-bold text-center text-orange-700 mb-6">{englishText}</h2>
+          <div className="bg-white rounded-xl shadow-2xl p-4 sm:p-6 border-4 border-orange-200">
+            <h2 className="text-xl sm:text-2xl font-bold text-center text-orange-700 mb-4 sm:mb-6">{englishText}</h2>
             <div className="relative w-full aspect-[3/4]">
               <Image
                 src="/preamble-english.jpeg"
@@ -164,8 +143,8 @@ export default function PreamblePage() {
           </div>
 
           {/* Hindi Preamble */}
-          <div className="bg-white rounded-xl shadow-2xl p-6 border-4 border-green-200">
-            <h2 className="text-2xl font-bold text-center text-green-700 mb-6">हिंदी (Hindi)</h2>
+          <div className="bg-white rounded-xl shadow-2xl p-4 sm:p-6 border-4 border-green-200">
+            <h2 className="text-xl sm:text-2xl font-bold text-center text-green-700 mb-4 sm:mb-6">हिंदी (Hindi)</h2>
             <div className="relative w-full aspect-[3/4]">
               <Image
                 src="/preamble-hindi.jpeg"

@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
 import { Scale, Search, BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
-import LanguageSelector from "../../components/LanguageSelector";
 import { useTranslate } from "../../hooks/useTranslate";
 import { useUserStats } from "../../hooks/useUserStats";
 import { CONSTITUTION_PARTS } from "../../data/constitution";
+import ResponsiveNav from "../../components/ResponsiveNav";
 
 export default function ConstitutionPage() {
   const { incrementArticlesRead, updateLearningProgress, stats } = useUserStats();
@@ -80,33 +79,13 @@ export default function ConstitutionPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 bg-constitution-lines">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <Scale className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">Legal Awareness</span>
-            </Link>
-            <div className="flex items-center space-x-6">
-              <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">{dashboardText}</Link>
-              <Link href="/preamble" className="text-gray-600 hover:text-blue-600 transition-colors">{preambleText}</Link>
-              <Link href="/constitution" className="text-blue-600 font-medium">{constitutionText}</Link>
-              <Link href="/acts" className="text-gray-600 hover:text-blue-600 transition-colors">{actsText}</Link>
-              <Link href="/quiz" className="text-gray-600 hover:text-blue-600 transition-colors">{quizText}</Link>
-              <Link href="/forum" className="text-gray-600 hover:text-blue-600 transition-colors">{forumText}</Link>
-              <LanguageSelector />
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </div>
-        </div>
-      </nav>
+      <ResponsiveNav currentPage="constitution" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 font-playfair">{constitutionOfIndiaText}</h1>
-          <p className="text-lg text-gray-600">{exploreDescriptionText}</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-3 sm:mb-4 font-playfair">{constitutionOfIndiaText}</h1>
+          <p className="text-base sm:text-lg text-gray-600">{exploreDescriptionText}</p>
         </div>
 
         {/* Back Button */}
@@ -119,7 +98,7 @@ export default function ConstitutionPage() {
                 setSelectedPart(null);
               }
             }}
-            className="mb-6 flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition"
+            className="mb-4 sm:mb-6 flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition text-sm sm:text-base"
           >
             <ChevronLeft className="h-4 w-4" />
             <span>{selectedArticle !== null ? backToArticlesText : backToPartsText}</span>
@@ -128,15 +107,15 @@ export default function ConstitutionPage() {
 
         {/* Search */}
         {!selectedPart && (
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <div className="relative max-w-2xl">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
               <input 
                 type="text" 
                 placeholder={searchPlaceholderText} 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" 
+                className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" 
               />
             </div>
           </div>

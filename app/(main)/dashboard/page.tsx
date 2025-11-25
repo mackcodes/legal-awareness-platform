@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { UserButton, useUser } from "@clerk/nextjs";
-import { Scale, BookOpen, MessageSquare, Award, Search, TrendingUp } from "lucide-react";
-import LanguageSelector from "../../components/LanguageSelector";
+import { useUser } from "@clerk/nextjs";
+import { BookOpen, MessageSquare, Award, Search, TrendingUp, Scale } from "lucide-react";
 import { useTranslate } from "../../hooks/useTranslate";
 import { useTranslation } from "../../contexts/TranslationContext";
 import { useUserStats } from "../../hooks/useUserStats";
 import { CONSTITUTION_PARTS } from "../../data/constitution";
 import { INDIAN_ACTS } from "../../data/acts";
 import Leaderboard from "../../components/Leaderboard";
+import ResponsiveNav from "../../components/ResponsiveNav";
 
 // Component for rendering learning items with translation
 function LearningItemCard({ item, colorClasses, progressBarClasses, IconComponent, completeText }: any) {
@@ -164,144 +164,86 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 bg-justice-dots">
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <Scale className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">
-                {legalAwarenessText}
-              </span>
-            </Link>
-            <div className="flex items-center space-x-6">
-              <Link
-                href="/dashboard"
-                className="text-blue-600 font-medium"
-              >
-                {dashboardText}
-              </Link>
-              <Link
-                href="/preamble"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-              >
-                {preambleText}
-              </Link>
-              <Link
-                href="/constitution"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-              >
-                {constitutionText}
-              </Link>
-              <Link
-                href="/acts"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-              >
-                {actsText}
-              </Link>
-              <Link
-                href="/quiz"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-              >
-                {quizText}
-              </Link>
-              <Link
-                href="/forum"
-                className="text-gray-600 hover:text-blue-600 transition-colors"
-              >
-                {forumText}
-              </Link>
-              <LanguageSelector />
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </div>
-        </div>
-      </nav>
+      <ResponsiveNav currentPage="dashboard" />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Welcome Section */}
-        <div className="bg-blue-600 rounded-xl p-8 mb-8 text-white bg-scales-pattern relative overflow-hidden">
+        <div className="bg-blue-600 rounded-xl p-4 sm:p-8 mb-4 sm:mb-8 text-white bg-scales-pattern relative overflow-hidden">
           <div className="relative z-10">
-            <h1 className="text-3xl font-bold mb-2 font-playfair">
+            <h1 className="text-xl sm:text-3xl font-bold mb-2 font-playfair">
               {currentLanguage === 'hi' 
                 ? `स्वागत है, ${user?.firstName || "उपयोगकर्ता"}!`
                 : `${welcomeText}, ${user?.firstName || "User"}!`
               }
             </h1>
-            <p className="text-blue-100 font-inter">
+            <p className="text-sm sm:text-base text-blue-100 font-inter">
               {journeyText}
             </p>
           </div>
         </div>
 
         {/* Search Bar */}
-        <div className="mb-8">
+        <div className="mb-4 sm:mb-8">
           <div className="relative max-w-2xl">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
             <input
               type="text"
               placeholder={searchPlaceholder}
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-8">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">{articlesReadText}</span>
-              <BookOpen className="h-5 w-5 text-blue-600" />
+              <span className="text-gray-600 text-xs sm:text-sm">{articlesReadText}</span>
+              <BookOpen className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
             </div>
-            <div className="text-3xl font-bold text-gray-900">{loading ? "..." : stats.articlesRead}</div>
-            <div className="text-gray-500 text-sm mt-1">{stats.readArticles.length} {totalText}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{loading ? "..." : stats.articlesRead}</div>
+            <div className="text-gray-500 text-xs sm:text-sm mt-1">{stats.readArticles.length} {totalText}</div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">{quizScoreText}</span>
-              <Award className="h-5 w-5 text-green-600" />
+              <span className="text-gray-600 text-xs sm:text-sm">{quizScoreText}</span>
+              <Award className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
-            <div className="text-3xl font-bold text-gray-900">{loading ? "..." : getAverageQuizScore()}%</div>
-            <div className="text-gray-500 text-sm mt-1">{stats.quizzesTaken} {quizzesTakenText}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{loading ? "..." : getAverageQuizScore()}%</div>
+            <div className="text-gray-500 text-xs sm:text-sm mt-1">{stats.quizzesTaken} {quizzesTakenText}</div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">{forumPostsText}</span>
-              <MessageSquare className="h-5 w-5 text-purple-600" />
+              <span className="text-gray-600 text-xs sm:text-sm">{forumPostsText}</span>
+              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
             </div>
-            <div className="text-3xl font-bold text-gray-900">{loading ? "..." : getTotalForumContributions()}</div>
-            <div className="text-gray-500 text-sm mt-1">{stats.forumPosts} {postsText}, {stats.forumReplies} {repliesLowercaseText}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{loading ? "..." : getTotalForumContributions()}</div>
+            <div className="text-gray-500 text-xs sm:text-sm mt-1">{stats.forumPosts} {postsText}, {stats.forumReplies} {repliesLowercaseText}</div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-gray-600 text-sm">{streakText}</span>
-              <TrendingUp className="h-5 w-5 text-orange-600" />
+              <span className="text-gray-600 text-xs sm:text-sm">{streakText}</span>
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-orange-600" />
             </div>
-            <div className="text-3xl font-bold text-gray-900">{loading ? "..." : stats.currentStreak}</div>
-            <div className="text-gray-600 text-sm mt-1">{daysText}</div>
+            <div className="text-2xl sm:text-3xl font-bold text-gray-900">{loading ? "..." : stats.currentStreak}</div>
+            <div className="text-gray-600 text-xs sm:text-sm mt-1">{daysText}</div>
           </div>
         </div>
 
         {/* Main Grid */}
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Leaderboard (wider) */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-6">
-              <Leaderboard />
-            </div>
-          </div>
-
-          {/* Right Columns - Main Content (narrower) */}
-          <div className="lg:col-span-2 space-y-6">
+        <div className="grid lg:grid-cols-5 gap-4 sm:gap-6">
+          {/* Left Column - Main Content (Smaller) */}
+          <div className="lg:col-span-3 space-y-4 sm:space-y-6">
+            {/* Continue Learning Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
                 {continueLearningText}
               </h2>
-              <div className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 {topLearningItems.length > 0 ? (
                   topLearningItems.map((item) => {
                     const IconComponent = item.icon;
@@ -328,7 +270,7 @@ export default function DashboardPage() {
                     );
                   })
                 ) : (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="col-span-full text-center py-8 text-gray-500">
                     <BookOpen className="h-12 w-12 mx-auto mb-3 text-gray-400" />
                     <p className="text-sm">Start reading articles and acts to track your progress!</p>
                   </div>
@@ -336,116 +278,133 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Recent Forum Activity */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
-                {recentDiscussionsText}
-              </h2>
-              <div className="space-y-4">
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">
-                      {understandingArticle21Text}
-                    </h3>
-                    <span className="text-xs text-gray-500">2h ago</span>
+            {/* Two Column Layout for Forum and Quick Access */}
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+              {/* Recent Forum Activity */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">
+                  {recentDiscussionsText}
+                </h2>
+                <div className="space-y-4">
+                  <div className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-semibold text-gray-900 text-sm">
+                        {understandingArticle21Text}
+                      </h3>
+                      <span className="text-xs text-gray-500">2h</span>
+                    </div>
+                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                      {article21QuestionText}
+                    </p>
+                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                      <span>12 {repliesText}</span>
+                      <span>•</span>
+                      <span>45 {viewsText}</span>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {article21QuestionText}
-                  </p>
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
-                    <span>12 {repliesText}</span>
-                    <span>•</span>
-                    <span>45 {viewsText}</span>
+
+                  <div className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-semibold text-gray-900 text-sm">
+                        {consumerProtectionText}
+                      </h3>
+                      <span className="text-xs text-gray-500">5h</span>
+                    </div>
+                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                      {consumerExperienceText}
+                    </p>
+                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                      <span>8 {repliesText}</span>
+                      <span>•</span>
+                      <span>32 {viewsText}</span>
+                    </div>
                   </div>
                 </div>
+                <Link
+                  href="/forum"
+                  className="block mt-4 text-center text-blue-600 hover:underline text-sm font-medium"
+                >
+                  {viewAllDiscussionsText} →
+                </Link>
+              </div>
 
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">
-                      {consumerProtectionText}
-                    </h3>
-                    <span className="text-xs text-gray-500">5h ago</span>
+              {/* Quick Links */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  {quickAccessText}
+                </h2>
+                <div className="space-y-3">
+                  <Link
+                    href="/constitution"
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition group"
+                  >
+                    <BookOpen className="h-5 w-5 text-blue-600 group-hover:scale-110 transition" />
+                    <span className="text-gray-900 font-medium">{browseConstitutionText}</span>
+                  </Link>
+                  <Link
+                    href="/acts"
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition group"
+                  >
+                    <Scale className="h-5 w-5 text-green-600 group-hover:scale-110 transition" />
+                    <span className="text-gray-900 font-medium">{exploreActsText}</span>
+                  </Link>
+                  <Link
+                    href="/quiz"
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition group"
+                  >
+                    <Award className="h-5 w-5 text-orange-600 group-hover:scale-110 transition" />
+                    <span className="text-gray-900 font-medium">{takeQuizText}</span>
+                  </Link>
+                  <Link
+                    href="/forum"
+                    className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition group"
+                  >
+                    <MessageSquare className="h-5 w-5 text-purple-600 group-hover:scale-110 transition" />
+                    <span className="text-gray-900 font-medium">{joinDiscussionText}</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Info Cards */}
+            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+              {/* Learning Tip */}
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                <h3 className="font-bold text-gray-900 mb-2 flex items-center gap-2">
+                  <span className="text-2xl">💡</span>
+                  {didYouKnowText}
+                </h3>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {constitutionFactText}
+                </p>
+              </div>
+
+              {/* Progress Badge */}
+              <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl shadow-sm border border-yellow-200 p-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full ring-4 ring-yellow-200">
+                      <Award className="h-8 w-8 text-yellow-600" />
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {consumerExperienceText}
-                  </p>
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
-                    <span>8 {repliesText}</span>
-                    <span>•</span>
-                    <span>32 {viewsText}</span>
+                  <div>
+                    <h3 className="font-bold text-gray-900 mb-1">
+                      {legalExplorerText}
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      {unlockBadgesText}
+                    </p>
                   </div>
                 </div>
               </div>
-              <Link
-                href="/forum"
-                className="block mt-4 text-center text-blue-600 hover:underline text-sm font-medium"
-              >
-                {viewAllDiscussionsText} →
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Section - Quick Access, Tips, Badge */}
-        <div className="grid md:grid-cols-3 gap-6 mt-8">
-          {/* Quick Links */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
-              {quickAccessText}
-            </h2>
-            <div className="space-y-3">
-              <Link
-                href="/constitution"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-              >
-                <BookOpen className="h-5 w-5 text-blue-600" />
-                <span className="text-gray-900">{browseConstitutionText}</span>
-              </Link>
-              <Link
-                href="/acts"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-              >
-                <Scale className="h-5 w-5 text-green-600" />
-                <span className="text-gray-900">{exploreActsText}</span>
-              </Link>
-              <Link
-                href="/quiz"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-              >
-                <Award className="h-5 w-5 text-orange-600" />
-                <span className="text-gray-900">{takeQuizText}</span>
-              </Link>
-              <Link
-                href="/forum"
-                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-              >
-                <MessageSquare className="h-5 w-5 text-purple-600" />
-                <span className="text-gray-900">{joinDiscussionText}</span>
-              </Link>
             </div>
           </div>
 
-          {/* Learning Tip */}
-          <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-            <h3 className="font-bold text-gray-900 mb-2">
-              💡 {didYouKnowText}
-            </h3>
-            <p className="text-sm text-gray-700">
-              {constitutionFactText}
-            </p>
-          </div>
-
-          {/* Progress Badge */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-3">
-              <Award className="h-8 w-8 text-yellow-600" />
+          {/* Right Column - Leaderboard (Wider Sidebar) */}
+          <div className="lg:col-span-2">
+            <div className="lg:sticky lg:top-6">
+              <Leaderboard />
             </div>
-            <h3 className="font-bold text-gray-900 mb-1">
-              {legalExplorerText}
-            </h3>
-            <p className="text-sm text-gray-600">
-              {unlockBadgesText}
-            </p>
           </div>
         </div>
       </main>

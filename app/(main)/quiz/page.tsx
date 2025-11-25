@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
-import { UserButton, useUser } from "@clerk/nextjs";
-import { Scale, Award, CheckCircle, XCircle, Sparkles, Loader2, ChevronDown, Search, Clock, Lightbulb, History, Trophy, Info } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
+import { Scale, Award, CheckCircle, XCircle, Sparkles, Loader2, ChevronDown, Search, Clock, Lightbulb, History, Trophy, Info, X } from "lucide-react";
 import LanguageSelector from "../../components/LanguageSelector";
 import { useTranslate } from "../../hooks/useTranslate";
 import { useUserStats } from "../../hooks/useUserStats";
 import Leaderboard from "../../components/Leaderboard";
+import ResponsiveNav from "../../components/ResponsiveNav";
 
 interface QuizQuestion {
   question: string;
@@ -61,6 +62,10 @@ export default function QuizPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
   const [quizHistory, setQuizHistory] = useState<QuizAttempt[]>([]);
+  const [showReport, setShowReport] = useState(false);
+  const [aiReport, setAiReport] = useState<string>("");
+  const [generatingReport, setGeneratingReport] = useState(false);
+  const [userAnswers, setUserAnswers] = useState<number[]>([]);
   
   const historyKey = useMemo(() => `quizHistory-${user?.id ?? 'guest'}`, [user?.id]);
   const leaderboard = useMemo(
@@ -353,6 +358,8 @@ export default function QuizPage() {
       return;
     }
 
+    if (isGenerating) return; // Prevent multiple clicks
+
     setIsGenerating(true);
     setGenerationError("");
 
@@ -397,6 +404,8 @@ export default function QuizPage() {
   };
 
   const startRandomQuiz = async () => {
+    if (isGenerating) return; // Prevent multiple clicks
+
     // Randomly select topic from constitution-related topics
     const constitutionTopics = topics.filter(t => t.value !== 'custom');
     const randomTopic = constitutionTopics[Math.floor(Math.random() * constitutionTopics.length)];
@@ -470,6 +479,11 @@ export default function QuizPage() {
     setAnswered(true);
     setTimedOut(false);
 
+    // Track user's answer
+    const newAnswers = [...userAnswers];
+    newAnswers[currentQuestion] = index;
+    setUserAnswers(newAnswers);
+
     if (index === questions[currentQuestion].correct) {
       setScore(score + 1);
     }
@@ -489,6 +503,65 @@ export default function QuizPage() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
 
+  const generatePerformanceReport = async () => {
+    setGeneratingReport(true);
+    setShowReport(true);
+
+    try {
+      // Calculate hints used
+      const hintsUsedCount = Object.keys(hintVisibility).filter(key => hintVisibility[parseInt(key)]).length;
+
+      // Prepare quiz analysis data
+      const incorrectQuestions = questions
+        .map((q, idx) => ({
+          question: q.question,
+          userAnswer: userAnswers[idx] !== undefined ? q.options[userAnswers[idx]] : "No answer",
+          correctAnswer: q.options[q.correct],
+          explanation: q.explanation || "",
+          topic: activeQuizConfig.topic
+        }))
+        .filter((_, idx) => userAnswers[idx] === undefined || userAnswers[idx] !== questions[idx].correct);
+
+      console.log('Sending report request:', {
+        topic: activeQuizConfig.topic,
+        difficulty: activeQuizConfig.difficulty,
+        score,
+        totalQuestions: questions.length,
+        incorrectCount: incorrectQuestions.length,
+        hintsUsed: hintsUsedCount,
+      });
+
+      const response = await fetch('/api/generate-report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          topic: activeQuizConfig.topic,
+          difficulty: activeQuizConfig.difficulty,
+          score,
+          totalQuestions: questions.length,
+          incorrectQuestions,
+          hintsUsed: hintsUsedCount,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error Response:', errorText);
+        throw new Error(`Failed to generate report: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setAiReport(data.report);
+    } catch (error) {
+      console.error('Error generating report:', error);
+      setAiReport('Failed to generate performance report. Please try again.');
+    } finally {
+      setGeneratingReport(false);
+    }
+  };
+
   const resetQuiz = () => {
     setQuizStarted(false);
     setCurrentQuestion(0);
@@ -505,60 +578,44 @@ export default function QuizPage() {
     setQuizStartTime(null);
     setActiveQuizConfig({ topic: "", difficulty: "medium", numQuestions: 0 });
     setLastQuizDuration(0);
+    setShowReport(false);
+    setAiReport("");
+    setUserAnswers([]);
     quizCompletedRef.current = false; // Reset completion tracker
   };
 
   return (
     <div className="min-h-screen bg-gray-50 bg-law-pattern">
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/" className="flex items-center space-x-2">
-              <Scale className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">Legal Awareness</span>
-            </Link>
-            <div className="flex items-center space-x-6">
-              <Link href="/dashboard" className="text-gray-600 hover:text-blue-600 transition-colors">{dashboardText}</Link>
-              <Link href="/preamble" className="text-gray-600 hover:text-blue-600 transition-colors">{preambleText}</Link>
-              <Link href="/constitution" className="text-gray-600 hover:text-blue-600 transition-colors">{constitutionText}</Link>
-              <Link href="/acts" className="text-gray-600 hover:text-blue-600 transition-colors">{actsText}</Link>
-              <Link href="/quiz" className="text-blue-600 font-medium">{quizText}</Link>
-              <Link href="/forum" className="text-gray-600 hover:text-blue-600 transition-colors">{forumText}</Link>
-              <LanguageSelector />
-              <UserButton afterSignOutUrl="/" />
-            </div>
-          </div>
-        </div>
-      </nav>
+      <ResponsiveNav currentPage="quiz" />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-3 gap-6">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-12">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content Area */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6 order-2 lg:order-1">
         {!quizStarted && quizHistory.length > 0 && (
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+          <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <History className="h-5 w-5 text-blue-600" />
-                <h2 className="text-lg font-semibold text-gray-900">{recentAttemptsText}</h2>
+                <History className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900">{recentAttemptsText}</h2>
               </div>
               <button
                 onClick={() => setShowHistoryPanel(!showHistoryPanel)}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
                 {showHistoryPanel ? hideDetailsText : viewAllText}
               </button>
             </div>
             <div className="space-y-3">
               {recentHistory.map((attempt) => (
-                <div key={attempt.id} className="border border-gray-100 rounded-lg p-3 flex flex-wrap gap-4 items-center">
-                  <div>
+                <div key={attempt.id} className="border border-gray-100 rounded-lg p-3 flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 sm:items-center">
+                  <div className="flex-1">
                     <p className="text-sm font-medium text-gray-900">{attempt.topic}</p>
                     <p className="text-xs text-gray-500">
                       {new Date(attempt.date).toLocaleString()} · {attempt.difficulty} · {attempt.numQuestions} questions
                     </p>
                   </div>
-                  <div className="ml-auto flex items-center gap-4 text-sm">
+                  <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm">
                     <span className="font-semibold text-blue-600">{attempt.score}/{attempt.numQuestions}</span>
                     <span className="text-gray-500">{attempt.percentage}%</span>
                     <span className="text-gray-500">{formatSeconds(attempt.timeTaken)}</span>
@@ -589,17 +646,17 @@ export default function QuizPage() {
 
         {!quizStarted ? (
           /* Topic Selection Screen */
-          <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full mb-4">
-                <Sparkles className="h-5 w-5 text-blue-600" />
-                <span className="text-sm font-medium text-gray-700">AI-Powered Quiz</span>
+          <div className="bg-white rounded-xl p-4 sm:p-8 shadow-sm border border-gray-200">
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="inline-flex items-center gap-2 bg-blue-50 px-3 sm:px-4 py-2 rounded-full mb-4">
+                <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+                <span className="text-xs sm:text-sm font-medium text-gray-700">AI-Powered Quiz</span>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-3 font-playfair">Legal Knowledge Quiz</h1>
-              <p className="text-gray-600">Choose a topic to test your knowledge about Indian law and constitution</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 font-playfair">Legal Knowledge Quiz</h1>
+              <p className="text-sm sm:text-base text-gray-600">Choose a topic to test your knowledge about Indian law and constitution</p>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Topic Selection */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -780,7 +837,11 @@ export default function QuizPage() {
               <div className="space-y-3">
                 <button
                   type="button"
-                  onClick={generateQuiz}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    generateQuiz();
+                  }}
                   disabled={isGenerating || !selectedTopic || (selectedTopic === "custom" && !customTopic)}
                   className="w-full bg-blue-600 text-white hover:bg-blue-700 px-6 py-4 rounded-lg font-semibold transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
@@ -801,7 +862,11 @@ export default function QuizPage() {
 
                 <button
                   type="button"
-                  onClick={startRandomQuiz}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    startRandomQuiz();
+                  }}
                   disabled={isGenerating}
                   className="w-full bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -834,18 +899,18 @@ export default function QuizPage() {
             </div>
           </div>
         ) : showScore ? (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Main Results Card */}
-            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 text-center">
-              <div className="mb-6">
-                <Award className="h-20 w-20 text-yellow-500 mx-auto mb-4" />
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">{quizCompleteText}</h2>
-                <p className="text-xl text-gray-600">
+            <div className="bg-white rounded-xl p-4 sm:p-8 shadow-sm border border-gray-200 text-center">
+              <div className="mb-4 sm:mb-6">
+                <Award className="h-16 w-16 sm:h-20 sm:w-20 text-yellow-500 mx-auto mb-4" />
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{quizCompleteText}</h2>
+                <p className="text-lg sm:text-xl text-gray-600">
                   {youScoredText} {score} {outOfText} {questions.length}
                 </p>
               </div>
-              <div className="mb-6">
-                <div className="text-6xl font-bold text-blue-600">
+              <div className="mb-4 sm:mb-6">
+                <div className="text-4xl sm:text-6xl font-bold text-blue-600">
                   {Math.round((score / questions.length) * 100)}%
                 </div>
                 <p className="text-sm text-gray-500 mt-2">
@@ -870,6 +935,23 @@ export default function QuizPage() {
               </div>
 
               <div className="space-y-3">
+                <button 
+                  onClick={generatePerformanceReport}
+                  disabled={generatingReport}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700 px-6 py-3 rounded-lg font-semibold transition shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {generatingReport ? (
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>Generating AI Report...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-5 w-5" />
+                      <span>Get AI Performance Report</span>
+                    </>
+                  )}
+                </button>
                 <button onClick={resetQuiz} className="w-full bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition shadow-sm hover:shadow-md">
                   {takeAgainText}
                 </button>
@@ -877,6 +959,90 @@ export default function QuizPage() {
                   {backToDashboardText}
                 </Link>
               </div>
+
+              {/* AI Performance Report Modal */}
+              {showReport && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setShowReport(false)}>
+                  <div className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-hidden shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-6 text-white">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Sparkles className="h-8 w-8" />
+                          <div>
+                            <h2 className="text-2xl font-bold">AI Performance Report</h2>
+                            <p className="text-purple-100 text-sm">Personalized learning recommendations</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => setShowReport(false)}
+                          className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                        >
+                          <X className="h-6 w-6" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                      {generatingReport ? (
+                        <div className="flex flex-col items-center justify-center py-12">
+                          <Loader2 className="h-12 w-12 text-purple-600 animate-spin mb-4" />
+                          <p className="text-gray-600">Analyzing your performance...</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {aiReport.split('\n').map((line, index) => {
+                            // Headings with emojis
+                            if (line.match(/^(📊|🎯|📚|💡|🎓)/)) {
+                              return (
+                                <div key={index} className="mt-6 mb-3">
+                                  <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                                    {line}
+                                  </h3>
+                                  <div className="h-1 w-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mt-2"></div>
+                                </div>
+                              );
+                            }
+                            // Section headers (### or ##)
+                            if (line.startsWith('###')) {
+                              return (
+                                <h4 key={index} className="text-lg font-semibold text-gray-800 mt-4 mb-2">
+                                  {line.replace(/###/g, '').trim()}
+                                </h4>
+                              );
+                            }
+                            if (line.startsWith('##')) {
+                              return (
+                                <h3 key={index} className="text-xl font-bold text-gray-900 mt-5 mb-3">
+                                  {line.replace(/##/g, '').trim()}
+                                </h3>
+                              );
+                            }
+                            // Bullet points
+                            if (line.trim().startsWith('-') || line.trim().startsWith('•')) {
+                              const content = line.replace(/^[-•]\s*/, '').trim();
+                              // Bold text in **
+                              const formatted = content.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>');
+                              return (
+                                <div key={index} className="flex gap-3 ml-4 mb-2">
+                                  <span className="text-purple-600 mt-1.5 flex-shrink-0">•</span>
+                                  <p className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: formatted }}></p>
+                                </div>
+                              );
+                            }
+                            // Regular paragraphs
+                            if (line.trim()) {
+                              const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>');
+                              return (
+                                <p key={index} className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: formatted }}></p>
+                              );
+                            }
+                            return null;
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Leaderboard */}

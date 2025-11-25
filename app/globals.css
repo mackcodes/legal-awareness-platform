@@ -807,11 +807,6 @@ body {
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Focus visible improvements for accessibility */
 :focus-visible {
   outline: var(--focus-outline);

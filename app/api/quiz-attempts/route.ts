@@ -62,11 +62,13 @@ export async function POST(request: NextRequest) {
       completedAt: new Date(),
     });
 
+    const savedAttempt = quizAttempt as any;
+
     console.log('✅ Quiz attempt saved to MongoDB:', {
-      id: quizAttempt._id,
-      userId: quizAttempt.userId,
-      topic: quizAttempt.topic,
-      points: quizAttempt.points
+      id: savedAttempt._id,
+      userId: savedAttempt.userId,
+      topic: savedAttempt.topic,
+      points: savedAttempt.points
     });
 
     return NextResponse.json({ 
