@@ -33,17 +33,18 @@ export async function GET(request: NextRequest) {
     const userIds = leaderboardData.map(entry => entry._id);
     const client = await clerkClient();
     
-    // Fetch users in batches if there are many
-    const batchSize = 100;
+    // Fetch all users at once (Clerk handles batching internally)
     let allUsers: any[] = [];
     
-    for (let i = 0; i < userIds.length; i += batchSize) {
-      const batchIds = userIds.slice(i, i + batchSize);
-      const users = await client.users.getUserList({
-        userId: batchIds,
-        limit: batchSize,
-      });
-      allUsers = [...allUsers, ...users.data];
+    if (userIds.length > 0) {
+      try {
+        const usersResponse = await client.users.getUserList({
+          userId: userIds,
+        });
+        allUsers = usersResponse.data;
+      } catch (error) {
+        console.error('Error fetching users from Clerk:', error);
+      }
     }
 
     // Create a map of user details
