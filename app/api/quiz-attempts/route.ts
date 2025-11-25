@@ -44,10 +44,14 @@ export async function POST(request: NextRequest) {
     const { userId } = await auth();
     
     if (!userId) {
+      console.error('❌ Quiz attempt POST - User not authenticated');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const attemptData = await request.json();
+    
+    console.log('📥 Received quiz attempt from user:', userId);
+    console.log('📝 Attempt data:', attemptData);
 
     await dbConnect();
 
@@ -58,14 +62,21 @@ export async function POST(request: NextRequest) {
       completedAt: new Date(),
     });
 
+    console.log('✅ Quiz attempt saved to MongoDB:', {
+      id: quizAttempt._id,
+      userId: quizAttempt.userId,
+      topic: quizAttempt.topic,
+      points: quizAttempt.points
+    });
+
     return NextResponse.json({ 
       success: true, 
       attempt: quizAttempt 
     });
   } catch (error) {
-    console.error('Error saving quiz attempt:', error);
+    console.error('❌ Error saving quiz attempt:', error);
     return NextResponse.json(
-      { error: 'Failed to save quiz attempt' },
+      { error: 'Failed to save quiz attempt', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

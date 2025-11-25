@@ -203,11 +203,13 @@ export function useUserStats() {
     timeTaken: number;
   }) => {
     if (!isSignedIn) {
-      console.warn('Cannot save quiz attempt: User not signed in');
-      return;
+      console.error('❌ Cannot save quiz attempt: User not signed in');
+      return false;
     }
 
     try {
+      console.log('📤 Saving quiz attempt to MongoDB:', attemptData);
+      
       // Save to quiz attempts collection
       const response = await fetch('/api/quiz-attempts', {
         method: 'POST',
@@ -217,9 +219,14 @@ export function useUserStats() {
         body: JSON.stringify(attemptData),
       });
 
+      const responseData = await response.json();
+      
       if (!response.ok) {
+        console.error('❌ Failed to save quiz attempt. Response:', responseData);
         throw new Error('Failed to save quiz attempt');
       }
+
+      console.log('✅ Quiz attempt saved to database:', responseData);
 
       // Update quiz streak
       const today = new Date().toDateString();
@@ -250,10 +257,10 @@ export function useUserStats() {
 
       await saveStats(updatedStats);
 
-      console.log('✅ Quiz attempt saved successfully');
+      console.log('✅ Quiz attempt and user stats saved successfully');
       return true;
     } catch (error) {
-      console.error('Error saving quiz attempt:', error);
+      console.error('❌ Error saving quiz attempt:', error);
       return false;
     }
   };

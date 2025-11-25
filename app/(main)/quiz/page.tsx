@@ -204,6 +204,16 @@ export default function QuizPage() {
 
     const points = calculatePoints();
 
+    console.log('🎯 Quiz completed! Attempting to save...');
+    console.log('📊 Quiz stats:', { 
+      quizId, 
+      topic: activeQuizConfig.topic,
+      score, 
+      percentage: percentageScore,
+      points,
+      timeTaken 
+    });
+
     // Save quiz attempt to MongoDB (stats and leaderboard data only)
     saveQuizAttempt({
       quizId,
@@ -217,7 +227,11 @@ export default function QuizPage() {
     }).then((success) => {
       if (success) {
         console.log('✅ Quiz data saved to MongoDB');
+      } else {
+        console.error('❌ Failed to save quiz data to MongoDB');
       }
+    }).catch((error) => {
+      console.error('❌ Exception while saving quiz:', error);
     });
 
     // Keep localStorage history for immediate UI updates

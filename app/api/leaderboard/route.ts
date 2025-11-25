@@ -29,6 +29,9 @@ export async function GET(request: NextRequest) {
       },
     ]);
 
+    console.log(`📊 Leaderboard: Found ${leaderboardData.length} users with quiz attempts`);
+    console.log('👥 User IDs:', leaderboardData.map(entry => entry._id));
+
     // Get user details from Clerk
     const userIds = leaderboardData.map(entry => entry._id);
     const client = await clerkClient();
@@ -42,8 +45,9 @@ export async function GET(request: NextRequest) {
           userId: userIds,
         });
         allUsers = usersResponse.data;
+        console.log(`✅ Fetched ${allUsers.length} users from Clerk`);
       } catch (error) {
-        console.error('Error fetching users from Clerk:', error);
+        console.error('❌ Error fetching users from Clerk:', error);
       }
     }
 
