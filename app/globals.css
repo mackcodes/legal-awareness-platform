@@ -831,3 +831,33 @@ body {
   background-color: rgba(var(--color-teal-300-rgb), 0.3);
   color: var(--color-text);
 }
+
+/* Google Translate support for chatbot messages */
+.notranslate {
+  /* Allow Google Translate to work on these elements */
+}
+
+/* Ensure translated text maintains formatting */
+font[style] {
+  font-family: inherit !important;
+}
+
+/* Fix Google Translate widget positioning issues */
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.skiptranslate {
+  display: none !important;
+}
+
+/* Maintain chat message styling during translation */
+.notranslate * {
+  font-family: inherit;
+  color: inherit;
+  background: inherit;
+}

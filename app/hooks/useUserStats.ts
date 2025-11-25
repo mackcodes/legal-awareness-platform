@@ -266,21 +266,43 @@ export function useUserStats() {
   };
 
   // Increment forum posts
-  const incrementForumPosts = () => {
+  const incrementForumPosts = async () => {
     const newStats = {
       ...stats,
       forumPosts: stats.forumPosts + 1,
     };
-    saveStats(newStats);
+    await saveStats(newStats);
   };
 
   // Increment forum replies
-  const incrementForumReplies = () => {
+  const incrementForumReplies = async () => {
     const newStats = {
       ...stats,
       forumReplies: stats.forumReplies + 1,
     };
-    saveStats(newStats);
+    await saveStats(newStats);
+  };
+
+  // Decrement forum posts
+  const decrementForumPosts = async () => {
+    const newStats = {
+      ...stats,
+      forumPosts: Math.max(0, stats.forumPosts - 1),
+    };
+    await saveStats(newStats);
+    // Refetch to ensure we have the latest from DB
+    await fetchStats();
+  };
+
+  // Decrement forum replies
+  const decrementForumReplies = async () => {
+    const newStats = {
+      ...stats,
+      forumReplies: Math.max(0, stats.forumReplies - 1),
+    };
+    await saveStats(newStats);
+    // Refetch to ensure we have the latest from DB
+    await fetchStats();
   };
 
   // Update learning progress for a module
@@ -311,6 +333,11 @@ export function useUserStats() {
     saveStats(DEFAULT_STATS);
   };
 
+  // Manually refresh stats from database
+  const refreshStats = async () => {
+    await fetchStats();
+  };
+
   return {
     stats,
     loading,
@@ -319,9 +346,12 @@ export function useUserStats() {
     saveQuizAttempt,
     incrementForumPosts,
     incrementForumReplies,
+    decrementForumPosts,
+    decrementForumReplies,
     updateLearningProgress,
     getAverageQuizScore,
     getTotalForumContributions,
     resetStats,
+    refreshStats,
   };
 }

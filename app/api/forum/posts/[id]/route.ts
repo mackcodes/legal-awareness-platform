@@ -194,11 +194,15 @@ export async function DELETE(
       );
     }
 
+    // Count replies before deletion for stats update
+    const deletedRepliesCount = post.replies?.length || 0;
+
     await ForumPost.findByIdAndDelete(id);
 
     return NextResponse.json({
       success: true,
       message: 'Post deleted successfully',
+      deletedRepliesCount,
     });
   } catch (error) {
     console.error('Error deleting post:', error);

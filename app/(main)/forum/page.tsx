@@ -39,7 +39,7 @@ interface ForumReply {
 
 export default function ForumPage() {
   const { user } = useUser();
-  const { incrementForumPosts, incrementForumReplies } = useUserStats();
+  const { incrementForumPosts, incrementForumReplies, decrementForumPosts, decrementForumReplies } = useUserStats();
   const [newPost, setNewPost] = useState("");
   const [postTitle, setPostTitle] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Constitution");
@@ -328,6 +328,14 @@ export default function ForumPage() {
         const data = await response.json();
 
         if (data.success) {
+          // Decrement stats: post + all its replies
+          await decrementForumPosts();
+          if (data.deletedRepliesCount && data.deletedRepliesCount > 0) {
+            // Decrement for each reply that was deleted with the post
+            for (let i = 0; i < data.deletedRepliesCount; i++) {
+              await decrementForumReplies();
+            }
+          }
           fetchPosts(true);
         } else {
           alert(data.error || 'Failed to delete post');
@@ -340,6 +348,7 @@ export default function ForumPage() {
         const data = await response.json();
 
         if (data.success) {
+          await decrementForumReplies();
           fetchPosts(true);
         } else {
           alert(data.error || 'Failed to delete reply');
@@ -488,6 +497,7 @@ export default function ForumPage() {
 
         {/* Create New Post Toggle Button */}
         <button
+          type="button"
           onClick={() => setShowPostForm(!showPostForm)}
           className={`mb-6 flex items-center gap-2 px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition ${
             showPostForm 
@@ -519,6 +529,7 @@ export default function ForumPage() {
                 onChange={(e) => setPostTitle(e.target.value)}
                 placeholder={titlePlaceholderText}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                suppressHydrationWarning
               />
               <textarea
                 value={newPost}
@@ -526,6 +537,7 @@ export default function ForumPage() {
                 placeholder={thoughtsPlaceholderText}
                 rows={4}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition"
+                suppressHydrationWarning
               />
               <div className="flex items-center justify-between gap-4">
                 <select 
@@ -540,7 +552,8 @@ export default function ForumPage() {
                   <option>{civilLawText}</option>
                   <option>{otherText}</option>
                 </select>
-                <button 
+                <button
+                  type="button"
                   onClick={handlePostSubmit}
                   disabled={posting || !postTitle.trim() || !newPost.trim()}
                   className="bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-lg font-medium transition flex items-center space-x-2 shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
@@ -567,6 +580,7 @@ export default function ForumPage() {
           {[allText, constitutionText, actsText, consumerRightsText, criminalLawText, civilLawText].map((category) => (
             <button
               key={category}
+              type="button"
               onClick={() => setFilterCategory(category)}
               className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition ${
                 filterCategory === category
@@ -590,6 +604,7 @@ export default function ForumPage() {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">No discussions yet</h3>
             <p className="text-gray-600 mb-4">Be the first to start a conversation!</p>
             <button
+              type="button"
               onClick={() => setShowPostForm(true)}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
             >
@@ -630,6 +645,7 @@ export default function ForumPage() {
                         {isAuthor && !isEditing && (
                           <div className="flex items-center gap-2">
                             <button
+                              type="button"
                               onClick={() => handleEditPost(discussion)}
                               className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition"
                               title="Edit post"
@@ -637,6 +653,7 @@ export default function ForumPage() {
                               <Edit2 className="h-4 w-4" />
                             </button>
                             <button
+                              type="button"
                               onClick={() => handleDeletePost(discussion._id)}
                               className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition"
                               title="Delete post"
@@ -655,6 +672,7 @@ export default function ForumPage() {
                             onChange={(e) => setEditTitle(e.target.value)}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent font-bold"
                             placeholder="Title"
+                            suppressHydrationWarning
                           />
                           <textarea
                             value={editContent}
@@ -662,15 +680,18 @@ export default function ForumPage() {
                             rows={4}
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                             placeholder="Content"
+                            suppressHydrationWarning
                           />
                           <div className="flex gap-2">
                             <button
+                              type="button"
                               onClick={() => handleSavePostEdit(discussion._id)}
                               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition text-sm"
                             >
                               Save
                             </button>
                             <button
+                              type="button"
                               onClick={() => {
                                 setEditingPost(null);
                                 setEditTitle("");
@@ -692,21 +713,24 @@ export default function ForumPage() {
                   </div>
                   
                   <div className="flex items-center gap-6 text-sm text-gray-600 pt-3 border-t border-gray-200">
-                    <button 
+                    <button
+                      type="button"
                       onClick={() => handleLikeClick(discussion._id)}
                       className={`flex items-center gap-2 hover:text-blue-600 transition ${isLiked ? 'text-blue-600 font-semibold' : ''}`}
                     >
                       <ThumbsUp className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
                       <span>{discussion.likesCount || 0}</span>
                     </button>
-                    <button 
+                    <button
+                      type="button"
                       onClick={() => handleDislikeClick(discussion._id)}
                       className={`flex items-center gap-2 hover:text-red-600 transition ${isDisliked ? 'text-red-600 font-semibold' : ''}`}
                     >
                       <ThumbsDown className={`h-4 w-4 ${isDisliked ? 'fill-current' : ''}`} />
                       <span>{discussion.dislikesCount || 0}</span>
                     </button>
-                    <button 
+                    <button
+                      type="button"
                       onClick={() => setExpandedPost(isExpanded ? null : discussion._id)}
                       className="flex items-center gap-2 hover:text-blue-600 transition"
                     >
@@ -726,9 +750,11 @@ export default function ForumPage() {
                           placeholder="Write a reply..."
                           rows={3}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition text-sm"
+                          suppressHydrationWarning
                         />
                         <div className="mt-2 flex justify-end">
                           <button
+                            type="button"
                             onClick={() => handleReplySubmit(discussion._id)}
                             disabled={!replyContent[discussion._id]?.trim()}
                             className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
@@ -767,6 +793,7 @@ export default function ForumPage() {
                                       <div className="flex items-center gap-1">
                                         {isReplyAuthor && (
                                           <button
+                                            type="button"
                                             onClick={() => handleEditReply(reply)}
                                             className="p-1 text-blue-600 hover:bg-blue-100 rounded transition"
                                             title="Edit reply"
@@ -776,6 +803,7 @@ export default function ForumPage() {
                                         )}
                                         {canDeleteReply && (
                                           <button
+                                            type="button"
                                             onClick={() => handleDeleteReply(discussion._id, reply._id)}
                                             className="p-1 text-red-600 hover:bg-red-100 rounded transition"
                                             title={isPostAuthor && !isReplyAuthor ? "Delete reply (post author)" : "Delete reply"}
@@ -794,15 +822,18 @@ export default function ForumPage() {
                                         onChange={(e) => setEditContent(e.target.value)}
                                         rows={3}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
+                                        suppressHydrationWarning
                                       />
                                       <div className="flex gap-2">
                                         <button
+                                          type="button"
                                           onClick={() => handleSaveReplyEdit(discussion._id, reply._id)}
                                           className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition text-xs"
                                         >
                                           Save
                                         </button>
                                         <button
+                                          type="button"
                                           onClick={() => {
                                             setEditingReply(null);
                                             setEditContent("");
@@ -852,6 +883,7 @@ export default function ForumPage() {
 
             <div className="flex gap-3 justify-end">
               <button
+                type="button"
                 onClick={() => {
                   setShowDeleteModal(false);
                   setDeleteTarget(null);
@@ -861,6 +893,7 @@ export default function ForumPage() {
                 Cancel
               </button>
               <button
+                type="button"
                 onClick={confirmDelete}
                 className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition flex items-center gap-2"
               >

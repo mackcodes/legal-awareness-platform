@@ -687,6 +687,7 @@ export default function QuizPage() {
                             placeholder={searchTopicsText}
                             className="w-full pl-9 pr-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             autoFocus
+                            suppressHydrationWarning
                           />
                         </div>
                       </div>
@@ -784,6 +785,7 @@ export default function QuizPage() {
                     onChange={(e) => setCustomTopic(e.target.value)}
                     placeholder="e.g., Article 370, Cyber Laws, etc."
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    suppressHydrationWarning
                   />
                 </div>
               )}

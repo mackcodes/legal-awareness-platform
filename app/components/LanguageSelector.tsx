@@ -16,9 +16,11 @@ export default function LanguageSelector() {
   return (
     <div className="relative">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 transition-colors"
         aria-label="Select language"
+        suppressHydrationWarning
       >
         <Languages className="h-5 w-5 text-gray-700" />
         <span className="text-sm font-medium text-gray-700">
@@ -41,6 +43,7 @@ export default function LanguageSelector() {
               {Object.entries(LANGUAGES).map(([code, name]) => (
                 <button
                   key={code}
+                  type="button"
                   onClick={() => handleLanguageChange(code as LanguageCode)}
                   className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors ${
                     currentLanguage === code

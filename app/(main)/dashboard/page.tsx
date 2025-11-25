@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { BookOpen, MessageSquare, Award, Search, TrendingUp, Scale } from "lucide-react";
+import { BookOpen, MessageSquare, Award, TrendingUp, Scale, RefreshCw } from "lucide-react";
 import { useTranslate } from "../../hooks/useTranslate";
 import { useTranslation } from "../../contexts/TranslationContext";
 import { useUserStats } from "../../hooks/useUserStats";
@@ -10,6 +11,7 @@ import { CONSTITUTION_PARTS } from "../../data/constitution";
 import { INDIAN_ACTS } from "../../data/acts";
 import Leaderboard from "../../components/Leaderboard";
 import ResponsiveNav from "../../components/ResponsiveNav";
+import ConstitutionChatbot from "../../components/ConstitutionChatbot";
 
 // Component for rendering learning items with translation
 function LearningItemCard({ item, colorClasses, progressBarClasses, IconComponent, completeText }: any) {
@@ -47,8 +49,46 @@ function LearningItemCard({ item, colorClasses, progressBarClasses, IconComponen
 
 export default function DashboardPage() {
   const { user } = useUser();
-  const { stats, loading, getAverageQuizScore, getTotalForumContributions } = useUserStats();
+  const { stats, loading, getAverageQuizScore, getTotalForumContributions, refreshStats } = useUserStats();
   const { currentLanguage } = useTranslation();
+  const [syncing, setSyncing] = useState(false);
+  
+  // Sync forum stats with actual database counts
+  const syncForumStats = async () => {
+    setSyncing(true);
+    try {
+      const response = await fetch('/api/sync-forum-stats', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('✅ Forum stats synced:', data.stats);
+        // Refresh stats to show updated values
+        await refreshStats();
+        alert(`Stats synced! Posts: ${data.stats.forumPosts}, Replies: ${data.stats.forumReplies}`);
+      } else {
+        alert('Failed to sync stats: ' + data.error);
+      }
+    } catch (error) {
+      console.error('Error syncing stats:', error);
+      alert('Failed to sync stats');
+    } finally {
+      setSyncing(false);
+    }
+  };
+  
+  // Refresh stats when dashboard comes into view
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && refreshStats) {
+        refreshStats();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [refreshStats]);
   
   // Translation hooks for dashboard text
   const { text: welcomeText } = useTranslate("Welcome back");
@@ -168,31 +208,9 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        {/* Welcome Section */}
-        <div className="bg-blue-600 rounded-xl p-4 sm:p-8 mb-4 sm:mb-8 text-white bg-scales-pattern relative overflow-hidden">
-          <div className="relative z-10">
-            <h1 className="text-xl sm:text-3xl font-bold mb-2 font-playfair">
-              {currentLanguage === 'hi' 
-                ? `स्वागत है, ${user?.firstName || "उपयोगकर्ता"}!`
-                : `${welcomeText}, ${user?.firstName || "User"}!`
-              }
-            </h1>
-            <p className="text-sm sm:text-base text-blue-100 font-inter">
-              {journeyText}
-            </p>
-          </div>
-        </div>
-
-        {/* Search Bar */}
+        {/* AI Constitution Chatbot */}
         <div className="mb-4 sm:mb-8">
-          <div className="relative max-w-2xl">
-            <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder={searchPlaceholder}
-              className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-            />
-          </div>
+          <ConstitutionChatbot />
         </div>
 
         {/* Quick Stats */}
@@ -218,7 +236,18 @@ export default function DashboardPage() {
           <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200">
             <div className="flex items-center justify-between mb-2">
               <span className="text-gray-600 text-xs sm:text-sm">{forumPostsText}</span>
-              <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={syncForumStats}
+                  disabled={syncing}
+                  className="p-1 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
+                  title="Sync forum stats with database"
+                >
+                  <RefreshCw className={`h-3 w-3 sm:h-4 sm:w-4 text-gray-400 hover:text-purple-600 ${syncing ? 'animate-spin' : ''}`} />
+                </button>
+                <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+              </div>
             </div>
             <div className="text-2xl sm:text-3xl font-bold text-gray-900">{loading ? "..." : getTotalForumContributions()}</div>
             <div className="text-gray-500 text-xs sm:text-sm mt-1">{stats.forumPosts} {postsText}, {stats.forumReplies} {repliesLowercaseText}</div>
