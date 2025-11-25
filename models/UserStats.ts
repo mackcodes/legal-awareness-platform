@@ -12,6 +12,13 @@ export interface IUserStats {
   readArticles: string[];
   completedQuizzes: string[];
   learningProgress: Map<string, number>;
+  // Enhanced quiz statistics
+  bestQuizScore: number;
+  totalHintsUsed: number;
+  totalQuizTime: number; // Total time spent on quizzes in seconds
+  quizStreak: number; // Consecutive days with at least one quiz
+  lastQuizDate?: Date;
+  favoriteTopics: string[]; // Most frequently attempted topics
   createdAt: Date;
   updatedAt: Date;
 }
@@ -64,6 +71,25 @@ const UserStatsSchema = new Schema<IUserStats>(
       type: Map,
       of: Number,
       default: new Map(),
+    },
+    bestQuizScore: {
+      type: Number,
+      default: 0,
+    },
+    totalPoints: {
+      type: Number,
+      default: 0,
+    },
+    totalQuizTime: {
+      type: Number,
+      default: 0,
+    },
+    quizStreak: {
+      type: Number,
+      default: 0,
+    },
+    lastQuizDate: {
+      type: Date,
     },
   },
   {

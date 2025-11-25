@@ -1,21 +1,38 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
-import { Scale, Award, CheckCircle, XCircle, Sparkles, Loader2, ChevronDown, Search } from "lucide-react";
+import { UserButton, useUser } from "@clerk/nextjs";
+import { Scale, Award, CheckCircle, XCircle, Sparkles, Loader2, ChevronDown, Search, Clock, Lightbulb, History, Trophy, Info } from "lucide-react";
 import LanguageSelector from "../../components/LanguageSelector";
 import { useTranslate } from "../../hooks/useTranslate";
 import { useUserStats } from "../../hooks/useUserStats";
+import Leaderboard from "../../components/Leaderboard";
 
 interface QuizQuestion {
   question: string;
   options: string[];
   correct: number;
+  hint?: string;
+  explanation?: string;
+}
+
+interface QuizAttempt {
+  id: string;
+  topic: string;
+  difficulty: string;
+  numQuestions: number;
+  score: number;
+  percentage: number;
+  timeTaken: number; // seconds
+  date: string;
+  hintsUsed: number;
 }
 
 export default function QuizPage() {
-  const { addQuizCompletion } = useUserStats();
+  const { user } = useUser();
+  const { addQuizCompletion, saveQuizAttempt } = useUserStats();
+  const quizCompletedRef = useRef(false);
   
   // Quiz state
   const [quizStarted, setQuizStarted] = useState(false);
@@ -25,6 +42,13 @@ export default function QuizPage() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answered, setAnswered] = useState(false);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  const [activeQuizConfig, setActiveQuizConfig] = useState({ topic: "", difficulty: "medium", numQuestions: 0 });
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [questionTimeLimit, setQuestionTimeLimit] = useState(0);
+  const [quizStartTime, setQuizStartTime] = useState<number | null>(null);
+  const [hintVisibility, setHintVisibility] = useState<Record<number, boolean>>({});
+  const [timedOut, setTimedOut] = useState(false);
+  const [lastQuizDuration, setLastQuizDuration] = useState(0);
   
   // Topic selection state
   const [selectedTopic, setSelectedTopic] = useState("");
@@ -35,6 +59,182 @@ export default function QuizPage() {
   const [generationError, setGenerationError] = useState("");
   const [topicSearch, setTopicSearch] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showHistoryPanel, setShowHistoryPanel] = useState(false);
+  const [quizHistory, setQuizHistory] = useState<QuizAttempt[]>([]);
+  
+  const historyKey = useMemo(() => `quizHistory-${user?.id ?? 'guest'}`, [user?.id]);
+  const leaderboard = useMemo(
+    () =>
+      [...quizHistory]
+        .sort((a, b) => {
+          if (b.percentage !== a.percentage) return b.percentage - a.percentage;
+          return a.timeTaken - b.timeTaken;
+        })
+        .slice(0, 5),
+    [quizHistory]
+  );
+
+  const recentHistory = useMemo(() => quizHistory.slice(0, 5), [quizHistory]);
+  const hintsUsedThisQuiz = useMemo(
+    () => Object.values(hintVisibility).filter(Boolean).length,
+    [hintVisibility]
+  );
+  const averageTimePerQuestion = useMemo(() => {
+    if (questions.length === 0 || lastQuizDuration === 0) {
+      return 0;
+    }
+    return Math.max(1, Math.round(lastQuizDuration / questions.length));
+  }, [questions.length, lastQuizDuration]);
+  const isTimerCritical = questionTimeLimit > 0 && timeLeft <= Math.max(5, Math.floor(questionTimeLimit * 0.25));
+  const timerProgress = questionTimeLimit > 0 ? Math.max(0, Math.min(100, (timeLeft / questionTimeLimit) * 100)) : 0;
+  const hintShownForCurrentQuestion = !!hintVisibility[currentQuestion];
+  const isLastQuestion = questions.length > 0 && currentQuestion === questions.length - 1;
+
+  const getTimeLimitForDifficulty = (level: string) => {
+    switch (level) {
+      case "easy":
+        return 60;
+      case "hard":
+        return 25;
+      default:
+        return 40;
+    }
+  };
+
+  const initializeQuestionTimer = (level: string) => {
+    const limit = getTimeLimitForDifficulty(level);
+    setQuestionTimeLimit(limit);
+    setTimeLeft(limit);
+  };
+
+  const initializeQuizSession = (topicLabel: string, totalQuestions: number, difficultyLevel: string) => {
+    setActiveQuizConfig({ topic: topicLabel, difficulty: difficultyLevel, numQuestions: totalQuestions });
+    setHintVisibility({});
+    setTimedOut(false);
+    setQuizStartTime(Date.now());
+    initializeQuestionTimer(difficultyLevel);
+  };
+
+  const formatSeconds = (value: number) => {
+    const minutes = Math.floor(value / 60);
+    const seconds = value % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const proceedToNextQuestion = () => {
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+      setSelectedAnswer(null);
+      setAnswered(false);
+      setTimedOut(false);
+      initializeQuestionTimer(activeQuizConfig.difficulty);
+    } else {
+      // Stop the timer immediately when showing results
+      setTimeLeft(0);
+      setShowScore(true);
+    }
+  };
+
+  // Load and persist quiz history for leaderboard & insights
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const stored = localStorage.getItem(historyKey);
+      if (stored) {
+        setQuizHistory(JSON.parse(stored));
+      }
+    } catch (error) {
+      console.error('Error parsing quiz history:', error);
+    }
+  }, [historyKey]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      localStorage.setItem(historyKey, JSON.stringify(quizHistory.slice(0, 50)));
+    } catch (error) {
+      console.error('Error saving quiz history:', error);
+    }
+  }, [quizHistory, historyKey]);
+
+  useEffect(() => {
+    if (!quizStarted || showScore) return;
+    if (answered) return;
+    if (timeLeft <= 0) return;
+
+    const timer = window.setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [quizStarted, answered, timeLeft, showScore]);
+
+  useEffect(() => {
+    if (!quizStarted || showScore) return;
+    if (answered) return;
+    if (timeLeft > 0) return;
+
+    setTimedOut(true);
+    setAnswered(true);
+    setSelectedAnswer(null);
+  }, [timeLeft, quizStarted, showScore, answered]);
+
+  useEffect(() => {
+    if (!showScore || questions.length === 0) return;
+    if (!quizStartTime || quizCompletedRef.current) return; // Prevent running multiple times
+
+    // Mark as completed
+    quizCompletedRef.current = true;
+
+    const quizId = `quiz-${activeQuizConfig.topic || 'default'}-${Date.now()}`;
+    const percentageScore = Math.round((score / questions.length) * 100);
+
+    // Calculate final time taken immediately when quiz ends
+    const timeTaken = Math.round((Date.now() - quizStartTime) / 1000);
+    setLastQuizDuration(timeTaken);
+
+    // Calculate points based on score, difficulty, and time
+    const calculatePoints = () => {
+      const basePoints = score * 10;
+      const difficultyMultiplier = activeQuizConfig.difficulty === 'hard' ? 2 : activeQuizConfig.difficulty === 'medium' ? 1.5 : 1;
+      const timeBonus = timeTaken < questionTimeLimit * questions.length * 0.5 ? 50 : 0;
+      return Math.round(basePoints * difficultyMultiplier + timeBonus);
+    };
+
+    const points = calculatePoints();
+
+    // Save quiz attempt to MongoDB (stats and leaderboard data only)
+    saveQuizAttempt({
+      quizId,
+      topic: activeQuizConfig.topic || 'Custom Quiz',
+      difficulty: activeQuizConfig.difficulty as 'easy' | 'medium' | 'hard',
+      numQuestions: questions.length,
+      score,
+      percentage: percentageScore,
+      points,
+      timeTaken,
+    }).then((success) => {
+      if (success) {
+        console.log('✅ Quiz data saved to MongoDB');
+      }
+    });
+
+    // Keep localStorage history for immediate UI updates
+    const attempt: QuizAttempt = {
+      id: quizId,
+      topic: activeQuizConfig.topic || 'Custom Quiz',
+      difficulty: activeQuizConfig.difficulty,
+      numQuestions: questions.length,
+      score,
+      percentage: percentageScore,
+      timeTaken,
+      date: new Date().toISOString(),
+      hintsUsed: hintsUsedThisQuiz,
+    };
+
+    setQuizHistory((prev) => [attempt, ...prev].slice(0, 50));
+  }, [showScore, questions.length, score, saveQuizAttempt, activeQuizConfig, quizStartTime, hintsUsedThisQuiz, questionTimeLimit]);
 
   // Translation hooks for navigation
   const { text: dashboardText } = useTranslate("Dashboard");
@@ -79,6 +279,22 @@ export default function QuizPage() {
   const { text: perfectScoreText } = useTranslate("Perfect Score! 🎉");
   const { text: greatJobText } = useTranslate("Great Job! 👏");
   const { text: keepLearningText } = useTranslate("Keep Learning! 📚");
+  const { text: showHintLabelText } = useTranslate("Show Hint");
+  const { text: hintShownLabelText } = useTranslate("Hint Shown");
+  const { text: hintTitleText } = useTranslate("Hint");
+  const { text: explanationTitleText } = useTranslate("Explanation");
+  const { text: timeExpiredText } = useTranslate("Time's up! This question was marked incorrect.");
+  const { text: nextQuestionText } = useTranslate("Next Question");
+  const { text: viewResultsText } = useTranslate("View Results");
+  const { text: leaderboardTitleText } = useTranslate("Leaderboard");
+  const { text: recentAttemptsText } = useTranslate("Recent Attempts");
+  const { text: timeTakenText } = useTranslate("Time Taken");
+  const { text: avgTimePerQuestionText } = useTranslate("Avg Time per Question");
+  const { text: hintsUsedText } = useTranslate("Hints Used");
+  const { text: timerLabelText } = useTranslate("Timer");
+  const { text: noAttemptsText } = useTranslate("No attempts yet.");
+  const { text: viewAllText } = useTranslate("View All");
+  const { text: hideDetailsText } = useTranslate("Hide Details");
 
   // Predefined topics
   const topics = [
@@ -144,11 +360,20 @@ export default function QuizPage() {
       }
 
       const data = await response.json();
-      setQuestions(data.questions);
+      const normalizedQuestions: QuizQuestion[] = data.questions.map((question: QuizQuestion, index: number) => ({
+        ...question,
+        hint: question.hint || `Revisit the key principles behind this legal concept to guide your answer for question ${index + 1}.`,
+        explanation: question.explanation || "Refer back to the relevant article or act to reinforce this concept.",
+      }));
+
+      setQuestions(normalizedQuestions);
+      initializeQuizSession(topic, normalizedQuestions.length, difficulty);
       setQuizStarted(true);
       setCurrentQuestion(0);
       setScore(0);
       setShowScore(false);
+      setSelectedAnswer(null);
+      setAnswered(false);
     } catch (error) {
       console.error('Error generating quiz:', error);
       setGenerationError('Failed to generate quiz. Please try again.');
@@ -194,11 +419,20 @@ export default function QuizPage() {
       }
 
       const data = await response.json();
-      setQuestions(data.questions);
+      const normalizedQuestions: QuizQuestion[] = data.questions.map((question: QuizQuestion, index: number) => ({
+        ...question,
+        hint: question.hint || `Think about why this law was introduced to uncover the answer for question ${index + 1}.`,
+        explanation: question.explanation || "Cross-check the provisions of this law to understand the rationale.",
+      }));
+
+      setQuestions(normalizedQuestions);
+      initializeQuizSession(randomTopic.label, normalizedQuestions.length, randomDifficulty);
       setQuizStarted(true);
       setCurrentQuestion(0);
       setScore(0);
       setShowScore(false);
+      setSelectedAnswer(null);
+      setAnswered(false);
     } catch (error) {
       console.error('Error generating random quiz:', error);
       setGenerationError('Failed to generate random quiz. Please try again.');
@@ -207,35 +441,25 @@ export default function QuizPage() {
     }
   };
 
+  const showHintForCurrentQuestion = () => {
+    setHintVisibility((prev) => {
+      if (prev[currentQuestion]) {
+        return prev;
+      }
+      return { ...prev, [currentQuestion]: true };
+    });
+  };
+
   const handleAnswerClick = (index: number) => {
     if (answered) return;
     setSelectedAnswer(index);
     setAnswered(true);
+    setTimedOut(false);
 
     if (index === questions[currentQuestion].correct) {
       setScore(score + 1);
     }
-
-    setTimeout(() => {
-      const nextQuestion = currentQuestion + 1;
-      if (nextQuestion < questions.length) {
-        setCurrentQuestion(nextQuestion);
-        setSelectedAnswer(null);
-        setAnswered(false);
-      } else {
-        setShowScore(true);
-      }
-    }, 1500);
   };
-
-  // Track quiz completion
-  useEffect(() => {
-    if (showScore && questions.length > 0) {
-      const quizId = `quiz-${selectedTopic || 'default'}-${Date.now()}`;
-      const percentageScore = Math.round((score / questions.length) * 100);
-      addQuizCompletion(quizId, percentageScore);
-    }
-  }, [showScore]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -261,6 +485,13 @@ export default function QuizPage() {
     setSelectedTopic("");
     setCustomTopic("");
     setGenerationError("");
+    setHintVisibility({});
+    setTimeLeft(0);
+    setQuestionTimeLimit(0);
+    setQuizStartTime(null);
+    setActiveQuizConfig({ topic: "", difficulty: "medium", numQuestions: 0 });
+    setLastQuizDuration(0);
+    quizCompletedRef.current = false; // Reset completion tracker
   };
 
   return (
@@ -286,7 +517,62 @@ export default function QuizPage() {
         </div>
       </nav>
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Main Content Area */}
+          <div className="lg:col-span-2 space-y-6">
+        {!quizStarted && quizHistory.length > 0 && (
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <History className="h-5 w-5 text-blue-600" />
+                <h2 className="text-lg font-semibold text-gray-900">{recentAttemptsText}</h2>
+              </div>
+              <button
+                onClick={() => setShowHistoryPanel(!showHistoryPanel)}
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                {showHistoryPanel ? hideDetailsText : viewAllText}
+              </button>
+            </div>
+            <div className="space-y-3">
+              {recentHistory.map((attempt) => (
+                <div key={attempt.id} className="border border-gray-100 rounded-lg p-3 flex flex-wrap gap-4 items-center">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{attempt.topic}</p>
+                    <p className="text-xs text-gray-500">
+                      {new Date(attempt.date).toLocaleString()} · {attempt.difficulty} · {attempt.numQuestions} questions
+                    </p>
+                  </div>
+                  <div className="ml-auto flex items-center gap-4 text-sm">
+                    <span className="font-semibold text-blue-600">{attempt.score}/{attempt.numQuestions}</span>
+                    <span className="text-gray-500">{attempt.percentage}%</span>
+                    <span className="text-gray-500">{formatSeconds(attempt.timeTaken)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {showHistoryPanel && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">Full History</p>
+                <div className="max-h-64 overflow-y-auto space-y-2">
+                  {quizHistory.map((attempt) => (
+                    <div key={attempt.id} className="border border-gray-100 rounded-lg p-3 flex flex-wrap gap-4 items-center text-sm">
+                      <span className="font-medium text-gray-900">{attempt.topic}</span>
+                      <span className="text-gray-500">{new Date(attempt.date).toLocaleDateString()}</span>
+                      <span className="text-gray-500">{attempt.difficulty}</span>
+                      <span className="text-gray-500">{attempt.numQuestions} questions</span>
+                      <span className="font-semibold text-blue-600">{attempt.percentage}%</span>
+                      <span className="text-gray-500">{hintsUsedText}: {attempt.hintsUsed}</span>
+                      <span className="text-gray-500">Duration: {formatSeconds(attempt.timeTaken)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {!quizStarted ? (
           /* Topic Selection Screen */
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
@@ -479,6 +765,7 @@ export default function QuizPage() {
               {/* Action Buttons */}
               <div className="space-y-3">
                 <button
+                  type="button"
                   onClick={generateQuiz}
                   disabled={isGenerating || !selectedTopic || (selectedTopic === "custom" && !customTopic)}
                   className="w-full bg-blue-600 text-white hover:bg-blue-700 px-6 py-4 rounded-lg font-semibold transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
@@ -499,6 +786,7 @@ export default function QuizPage() {
                 <div className="text-center text-sm text-gray-500">{orText}</div>
 
                 <button
+                  type="button"
                   onClick={startRandomQuiz}
                   disabled={isGenerating}
                   className="w-full bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -532,30 +820,87 @@ export default function QuizPage() {
             </div>
           </div>
         ) : showScore ? (
-          <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 text-center">
-            <div className="mb-6">
-              <Award className="h-20 w-20 text-yellow-500 mx-auto mb-4" />
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">{quizCompleteText}</h2>
-              <p className="text-xl text-gray-600">
-                {youScoredText} {score} {outOfText} {questions.length}
-              </p>
-            </div>
-            <div className="mb-6">
-              <div className="text-6xl font-bold text-blue-600">
-                {Math.round((score / questions.length) * 100)}%
+          <div className="space-y-6">
+            {/* Main Results Card */}
+            <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 text-center">
+              <div className="mb-6">
+                <Award className="h-20 w-20 text-yellow-500 mx-auto mb-4" />
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">{quizCompleteText}</h2>
+                <p className="text-xl text-gray-600">
+                  {youScoredText} {score} {outOfText} {questions.length}
+                </p>
               </div>
-              <p className="text-sm text-gray-500 mt-2">
-                {score === questions.length ? perfectScoreText : score >= questions.length * 0.7 ? greatJobText : keepLearningText}
-              </p>
+              <div className="mb-6">
+                <div className="text-6xl font-bold text-blue-600">
+                  {Math.round((score / questions.length) * 100)}%
+                </div>
+                <p className="text-sm text-gray-500 mt-2">
+                  {score === questions.length ? perfectScoreText : score >= questions.length * 0.7 ? greatJobText : keepLearningText}
+                </p>
+              </div>
+
+              {/* Quiz Statistics */}
+              <div className="grid grid-cols-3 gap-4 mb-6">
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <p className="text-xs text-blue-600 font-medium mb-1">{timeTakenText}</p>
+                  <p className="text-lg font-bold text-blue-900">{formatSeconds(lastQuizDuration)}</p>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4">
+                  <p className="text-xs text-purple-600 font-medium mb-1">{avgTimePerQuestionText}</p>
+                  <p className="text-lg font-bold text-purple-900">{formatSeconds(averageTimePerQuestion)}</p>
+                </div>
+                <div className="bg-yellow-50 rounded-lg p-4">
+                  <p className="text-xs text-yellow-600 font-medium mb-1">{hintsUsedText}</p>
+                  <p className="text-lg font-bold text-yellow-900">{hintsUsedThisQuiz}</p>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <button onClick={resetQuiz} className="w-full bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition shadow-sm hover:shadow-md">
+                  {takeAgainText}
+                </button>
+                <Link href="/dashboard" className="block w-full bg-gray-100 text-gray-900 hover:bg-gray-200 px-6 py-3 rounded-lg font-medium transition">
+                  {backToDashboardText}
+                </Link>
+              </div>
             </div>
-            <div className="space-y-3">
-              <button onClick={resetQuiz} className="w-full bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-medium transition shadow-sm hover:shadow-md">
-                {takeAgainText}
-              </button>
-              <Link href="/dashboard" className="block w-full bg-gray-100 text-gray-900 hover:bg-gray-200 px-6 py-3 rounded-lg font-medium transition">
-                {backToDashboardText}
-              </Link>
-            </div>
+
+            {/* Leaderboard */}
+            {leaderboard.length > 0 && (
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div className="flex items-center gap-2 mb-4">
+                  <Trophy className="h-5 w-5 text-yellow-500" />
+                  <h3 className="text-lg font-semibold text-gray-900">{leaderboardTitleText}</h3>
+                </div>
+                <div className="space-y-2">
+                  {leaderboard.map((attempt, index) => (
+                    <div 
+                      key={attempt.id} 
+                      className={`flex items-center gap-4 p-3 rounded-lg ${
+                        index === 0 ? 'bg-yellow-50 border border-yellow-200' : 
+                        index === 1 ? 'bg-gray-50 border border-gray-200' : 
+                        index === 2 ? 'bg-orange-50 border border-orange-200' : 
+                        'bg-gray-50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white border-2 border-gray-200 font-bold text-sm">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-900 truncate">{attempt.topic}</p>
+                        <p className="text-xs text-gray-500">
+                          {new Date(attempt.date).toLocaleDateString()} · {attempt.difficulty}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-blue-600">{attempt.percentage}%</p>
+                        <p className="text-xs text-gray-500">{formatSeconds(attempt.timeTaken)}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
@@ -585,18 +930,67 @@ export default function QuizPage() {
                     </span>
                   </div>
                 </div>
-                <span className="text-sm font-medium text-blue-600">
-                  {scoreText}: {score}
-                </span>
+                <div className="flex items-center gap-3">
+                  {/* Timer Display */}
+                  {questionTimeLimit > 0 && (
+                    <div className={`flex items-center gap-2 px-3 py-1 rounded-full font-medium text-sm ${
+                      isTimerCritical ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'
+                    }`}>
+                      <Clock className={`h-4 w-4 ${isTimerCritical ? 'animate-pulse' : ''}`} />
+                      <span>{formatSeconds(timeLeft)}</span>
+                    </div>
+                  )}
+                  <span className="text-sm font-medium text-blue-600">
+                    {scoreText}: {score}
+                  </span>
+                </div>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div className="bg-blue-600 h-2 rounded-full transition-all" style={{ width: `${(currentQuestion / questions.length) * 100}%` }}></div>
               </div>
+              {/* Timer Progress Bar */}
+              {questionTimeLimit > 0 && (
+                <div className="w-full bg-gray-200 rounded-full h-1 mt-2">
+                  <div 
+                    className={`h-1 rounded-full transition-all ${
+                      isTimerCritical ? 'bg-red-500' : 'bg-green-500'
+                    }`} 
+                    style={{ width: `${timerProgress}%` }}
+                  ></div>
+                </div>
+              )}
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {questions[currentQuestion].question}
             </h2>
+
+            {/* Hint Button */}
+            {!answered && questions[currentQuestion].hint && (
+              <div className="mb-6">
+                <button
+                  onClick={showHintForCurrentQuestion}
+                  disabled={hintShownForCurrentQuestion}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-yellow-400 bg-yellow-50 text-yellow-700 hover:bg-yellow-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Lightbulb className="h-4 w-4" />
+                  <span className="text-sm font-medium">
+                    {hintShownForCurrentQuestion ? hintShownLabelText : showHintLabelText}
+                  </span>
+                </button>
+                {hintShownForCurrentQuestion && (
+                  <div className="mt-3 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <Info className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-sm font-semibold text-yellow-900 mb-1">{hintTitleText}</p>
+                        <p className="text-sm text-yellow-800">{questions[currentQuestion].hint}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="space-y-3">
               {questions[currentQuestion].options.map((option, index) => {
@@ -629,8 +1023,50 @@ export default function QuizPage() {
                 );
               })}
             </div>
+
+            {/* Timeout Message */}
+            {timedOut && (
+              <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-sm text-red-700 font-medium">{timeExpiredText}</p>
+              </div>
+            )}
+
+            {/* Explanation/Feedback after answer */}
+            {answered && questions[currentQuestion].explanation && (
+              <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-start gap-2">
+                  <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-blue-900 mb-1">{explanationTitleText}</p>
+                    <p className="text-sm text-blue-800">{questions[currentQuestion].explanation}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Navigation Button */}
+            {answered && (
+              <div className="mt-6">
+                <button
+                  onClick={proceedToNextQuestion}
+                  className="w-full bg-blue-600 text-white hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold transition shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+                >
+                  {isLastQuestion ? viewResultsText : nextQuestionText}
+                  <ChevronDown className="h-5 w-5 rotate-[-90deg]" />
+                </button>
+              </div>
+            )}
           </div>
         )}
+          </div>
+
+          {/* Right Sidebar - Leaderboard */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-6">
+              <Leaderboard compact={true} />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

@@ -16,6 +16,12 @@ export interface UserStats {
   learningProgress: {
     [key: string]: number; // Module ID -> Progress percentage
   };
+  // Enhanced quiz statistics
+  bestQuizScore: number;
+  totalPoints: number;
+  totalQuizTime: number;
+  quizStreak: number;
+  lastQuizDate?: string;
 }
 
 const DEFAULT_STATS: UserStats = {
@@ -29,6 +35,10 @@ const DEFAULT_STATS: UserStats = {
   readArticles: [],
   completedQuizzes: [],
   learningProgress: {},
+  bestQuizScore: 0,
+  totalPoints: 0,
+  totalQuizTime: 0,
+  quizStreak: 0,
 };
 
 export function useUserStats() {
@@ -181,6 +191,73 @@ export function useUserStats() {
     saveStats(newStats);
   };
 
+  // Save quiz attempt to database (stats and leaderboard data only)
+  const saveQuizAttempt = async (attemptData: {
+    quizId: string;
+    topic: string;
+    difficulty: 'easy' | 'medium' | 'hard';
+    numQuestions: number;
+    score: number;
+    percentage: number;
+    points: number;
+    timeTaken: number;
+  }) => {
+    if (!isSignedIn) {
+      console.warn('Cannot save quiz attempt: User not signed in');
+      return;
+    }
+
+    try {
+      // Save to quiz attempts collection
+      const response = await fetch('/api/quiz-attempts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(attemptData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save quiz attempt');
+      }
+
+      // Update quiz streak
+      const today = new Date().toDateString();
+      const lastQuiz = stats.lastQuizDate ? new Date(stats.lastQuizDate).toDateString() : null;
+      
+      let newQuizStreak = stats.quizStreak;
+      if (lastQuiz !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = yesterday.toDateString();
+        
+        if (lastQuiz === yesterdayStr) {
+          newQuizStreak = stats.quizStreak + 1;
+        } else if (lastQuiz !== today) {
+          newQuizStreak = 1;
+        }
+      }
+
+      // Update user stats - only update non-quiz fields
+      // Quiz stats (quizzesTaken, totalQuizScore, bestQuizScore, totalPoints, totalQuizTime) 
+      // are calculated from QuizAttempt collection in the GET endpoint
+      const updatedStats = {
+        ...stats,
+        completedQuizzes: [...stats.completedQuizzes, attemptData.quizId],
+        quizStreak: newQuizStreak,
+        lastQuizDate: new Date().toISOString(),
+      };
+
+      await saveStats(updatedStats);
+
+      console.log('✅ Quiz attempt saved successfully');
+      return true;
+    } catch (error) {
+      console.error('Error saving quiz attempt:', error);
+      return false;
+    }
+  };
+
   // Increment forum posts
   const incrementForumPosts = () => {
     const newStats = {
@@ -232,6 +309,7 @@ export function useUserStats() {
     loading,
     incrementArticlesRead,
     addQuizCompletion,
+    saveQuizAttempt,
     incrementForumPosts,
     incrementForumReplies,
     updateLearningProgress,

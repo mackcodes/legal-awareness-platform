@@ -9,6 +9,7 @@ import { useTranslation } from "../../contexts/TranslationContext";
 import { useUserStats } from "../../hooks/useUserStats";
 import { CONSTITUTION_PARTS } from "../../data/constitution";
 import { INDIAN_ACTS } from "../../data/acts";
+import Leaderboard from "../../components/Leaderboard";
 
 // Component for rendering learning items with translation
 function LearningItemCard({ item, colorClasses, progressBarClasses, IconComponent, completeText }: any) {
@@ -287,7 +288,14 @@ export default function DashboardPage() {
 
         {/* Main Grid */}
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Left Column - Continue Learning */}
+          {/* Left Column - Leaderboard (wider) */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-6">
+              <Leaderboard />
+            </div>
+          </div>
+
+          {/* Right Columns - Main Content (narrower) */}
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -376,68 +384,68 @@ export default function DashboardPage() {
               </Link>
             </div>
           </div>
+        </div>
 
-          {/* Right Column - Sidebar */}
-          <div className="space-y-6">
-            {/* Quick Links */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">
-                {quickAccessText}
-              </h2>
-              <div className="space-y-3">
-                <Link
-                  href="/constitution"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-                >
-                  <BookOpen className="h-5 w-5 text-blue-600" />
-                  <span className="text-gray-900">{browseConstitutionText}</span>
-                </Link>
-                <Link
-                  href="/acts"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-                >
-                  <Scale className="h-5 w-5 text-green-600" />
-                  <span className="text-gray-900">{exploreActsText}</span>
-                </Link>
-                <Link
-                  href="/quiz"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-                >
-                  <Award className="h-5 w-5 text-orange-600" />
-                  <span className="text-gray-900">{takeQuizText}</span>
-                </Link>
-                <Link
-                  href="/forum"
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
-                >
-                  <MessageSquare className="h-5 w-5 text-purple-600" />
-                  <span className="text-gray-900">{joinDiscussionText}</span>
-                </Link>
-              </div>
+        {/* Bottom Section - Quick Access, Tips, Badge */}
+        <div className="grid md:grid-cols-3 gap-6 mt-8">
+          {/* Quick Links */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h2 className="text-lg font-bold text-gray-900 mb-4">
+              {quickAccessText}
+            </h2>
+            <div className="space-y-3">
+              <Link
+                href="/constitution"
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
+              >
+                <BookOpen className="h-5 w-5 text-blue-600" />
+                <span className="text-gray-900">{browseConstitutionText}</span>
+              </Link>
+              <Link
+                href="/acts"
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
+              >
+                <Scale className="h-5 w-5 text-green-600" />
+                <span className="text-gray-900">{exploreActsText}</span>
+              </Link>
+              <Link
+                href="/quiz"
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
+              >
+                <Award className="h-5 w-5 text-orange-600" />
+                <span className="text-gray-900">{takeQuizText}</span>
+              </Link>
+              <Link
+                href="/forum"
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition"
+              >
+                <MessageSquare className="h-5 w-5 text-purple-600" />
+                <span className="text-gray-900">{joinDiscussionText}</span>
+              </Link>
             </div>
+          </div>
 
-            {/* Learning Tip */}
-            <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-              <h3 className="font-bold text-gray-900 mb-2">
-                💡 {didYouKnowText}
-              </h3>
-              <p className="text-sm text-gray-700">
-                {constitutionFactText}
-              </p>
-            </div>
+          {/* Learning Tip */}
+          <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+            <h3 className="font-bold text-gray-900 mb-2">
+              💡 {didYouKnowText}
+            </h3>
+            <p className="text-sm text-gray-700">
+              {constitutionFactText}
+            </p>
+          </div>
 
-            {/* Progress Badge */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-3">
-                <Award className="h-8 w-8 text-yellow-600" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-1">
-                {legalExplorerText}
-              </h3>
-              <p className="text-sm text-gray-600">
-                {unlockBadgesText}
-              </p>
+          {/* Progress Badge */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-3">
+              <Award className="h-8 w-8 text-yellow-600" />
             </div>
+            <h3 className="font-bold text-gray-900 mb-1">
+              {legalExplorerText}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {unlockBadgesText}
+            </p>
           </div>
         </div>
       </main>
