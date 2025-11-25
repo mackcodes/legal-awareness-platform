@@ -30,8 +30,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-        <body className="antialiased font-inter">
+      <html lang="en" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
+        <body className="antialiased font-inter" suppressHydrationWarning>
           <TranslationProvider>
             {children}
           </TranslationProvider>
