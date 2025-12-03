@@ -192,7 +192,7 @@ Complete guide covering:
 ### 1. Verify MongoDB Connection
 Your `.env.local` already has:
 ```env
-MONGODB_URI=mongodb+srv://mackcodes:Legalawareness6969@lawawareness.dvv3xyh.mongodb.net/?appName=lawAwareness
+MONGODB_URI=mongodb+srv
 ```
 
 ### 2. Test the System
