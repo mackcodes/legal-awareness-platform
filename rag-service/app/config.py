@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     )
     embedding_model_name: str = "intfloat/multilingual-e5-small"
     corpus_path: str = "data/corpus/full_corpus.json"
-    corpus_version: str = "COI as on 1st May, 2024 + BNS as on 6th October, 2025 + indianconstitution-pypi 1.5.3 + app-data"
+    corpus_version: str = "Corpus of 27 Oct 2026: COI as on 1 May 2024; Acts from India Code and Gazette prints incl. Labour Codes; BPR&D IPC-BNS mapping; app-data"
     index_dir: str = "data/index"
     top_k: int = 5
     dense_weight: float = 0.6

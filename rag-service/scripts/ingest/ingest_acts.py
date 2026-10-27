@@ -47,6 +47,9 @@ class ActSpec:
     source_dataset: str
     act_number: Optional[str] = None  # gazette: locates the Act inside a combined PDF
     edition: Optional[str] = None  # used when neither the PDF nor its file name carries a date
+    # (section number, PDF under data/raw/acts/) of Gazette notices that affect a section, e.g. a
+    # commencement notification on section 1; their English text becomes an amendment note.
+    notices: Tuple[Tuple[str, str], ...] = ()
 
 
 ACTS = [
@@ -69,6 +72,24 @@ ACTS = [
     ActSpec("bsa", "bsa/amended_criminal_laws.pdf", "Bharatiya Sakshya Adhiniyam, 2023",
             ("BSA", "Bharatiya Sakshya Adhiniyam", "Sakshya Adhiniyam"), "2023", "gazette", "bsa", "gazette",
             act_number="47 OF 2023", edition="As enacted (25th December, 2023)"),
+    ActSpec("wages", "labour_laws/c328da14bbb15fc4ad571dc33e7a4ab3.pdf", "The Code on Wages, 2019",
+            ("Code on Wages", "Wage Code", "Wages Code"), "2019", "gazette", "wages-code", "gazette",
+            act_number="29 OF 2019", edition="As enacted (8th August, 2019)",
+            notices=(("1", "labour_laws/0fd090d29a4576739079a7b565c8ca9d.pdf"),)),
+    ActSpec("ir-code", "labour_laws/682a44b5426bff2c1f4943ee1b2fd566.pdf", "The Industrial Relations Code, 2020",
+            ("Industrial Relations Code", "IR Code"), "2020", "gazette", "ir-code", "gazette",
+            act_number="35 OF 2020", edition="As enacted (28th September, 2020)",
+            notices=(("1", "labour_laws/3db01976470a13d7b54b0e6e410d42b8.pdf"),
+                     ("104", "labour_laws/91ef39e2096112f8b798e6c45c732e2f.pdf"))),
+    ActSpec("ss-code", "labour_laws/b0620548445580767b5c0d18c95c26f7.pdf", "The Code on Social Security, 2020",
+            ("Code on Social Security", "Social Security Code"), "2020", "gazette", "ss-code", "gazette",
+            act_number="36 OF 2020", edition="As enacted (28th September, 2020)",
+            notices=(("1", "labour_laws/b602569a9cd014c49d91472b6a22b24c.pdf"),)),
+    ActSpec("osh-code", "labour_laws/e0971b414d2951d58dd958ecec9c8c09.pdf",
+            "The Occupational Safety, Health and Working Conditions Code, 2020",
+            ("OSH Code", "Occupational Safety, Health and Working Conditions Code"), "2020", "gazette", "osh-code",
+            "gazette", act_number="37 OF 2020", edition="As enacted (28th September, 2020)",
+            notices=(("1", "labour_laws/68ed1ca2d97e2849c07e9972370577b6.pdf"),)),
 ]
 
 # India Code layout
@@ -337,7 +358,31 @@ def parse(spec: ActSpec) -> List[Dict[str, Any]]:
     if spec.layout == "gazette":
         _attach_margin_titles(asm.sections, margins)
     stamp = edition(spec, doc, pdf)
-    return [finish(spec, s, footnotes, stamp) for s in asm.sections]
+    items = [finish(spec, s, footnotes, stamp) for s in asm.sections]
+    by_number = {item["number"]: item for item in items}
+    for number, notice_pdf in spec.notices:
+        by_number[number]["amendment_notes"].append(notice_text(ACTS_DIR / notice_pdf))
+    return items
+
+
+_NOTICE_START = re.compile(r"S\.O\.\s*\d+\(E\)\.|The following Act of Parliament")
+_NOTICE_END = re.compile(r"\[F\.\s*No\.|Uploaded by|Digitally signed")
+
+
+def notice_text(pdf: Path) -> str:
+    """English text of a short bilingual Gazette notice (commencement notification or amending
+    Act): the English lines, from "S.O. ...(E).—" or "The following Act of Parliament" to the file
+    number or printer's line."""
+    lines = [
+        line.strip() for page in fitz.open(pdf) for line in page.get_text().splitlines()
+        if re.search(r"[a-z]{3}", line) and not re.search(r"[ऀ-ॿ]", line)
+    ]
+    text = join_lines(lines)
+    start = _NOTICE_START.search(text)
+    if not start:
+        raise SystemExit(f"No notice text found in {pdf.name}.")
+    end = _NOTICE_END.search(text, start.start())
+    return text[start.start(): end.start() if end else None].strip()
 
 
 def _attach_margin_titles(sections: List[Dict[str, Any]], margins: List[Tuple[int, float, str]]) -> None:
@@ -347,7 +392,9 @@ def _attach_margin_titles(sections: List[Dict[str, Any]], margins: List[Tuple[in
     for index, (page, y, section) in enumerate(starts):
         next_y = next((ny for np_, ny, _ in starts[index + 1:] if np_ == page), float("inf"))
         lines = [t for p, my, t in margins if p == page and y - 4 <= my < min(next_y - 4, y + 80)]
-        section["title"] = join_lines(lines).rstrip(".") or None
+        # Repeal sections also carry the repealed Acts' numbers in the margin ("16 of 1926.").
+        title = re.sub(r"\s*\b\d{1,3} of \d{4}\.?", "", join_lines(lines))
+        section["title"] = title.strip().rstrip(".") or None
 
 
 def finish(spec: ActSpec, section: Dict[str, Any], footnotes: Dict[Tuple[int, str], str], stamp: str) -> Dict[str, Any]:

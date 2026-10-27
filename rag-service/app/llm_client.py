@@ -1,9 +1,16 @@
+import re
+import time
 from dataclasses import dataclass
 from typing import Optional
 
 import requests
 
 from .config import settings
+
+# On a rate-limit reply, wait the delay Gemini suggests and retry once, but only if that delay is
+# short: a user waiting longer than this is better served by a clear error.
+MAX_RETRY_WAIT_S = 20
+OVERLOAD_RETRY_WAITS_S = (2, 5)
 
 
 class LlmGenerationError(Exception):
@@ -18,24 +25,51 @@ class Generation:
     output_tokens: Optional[int]
 
 
+def _retry_delay(response: requests.Response) -> Optional[float]:
+    """Seconds Gemini asks us to wait, from its RetryInfo ("retryDelay": "14s")."""
+    match = re.search(r'"retryDelay":\s*"(\d+(?:\.\d+)?)s"', response.text)
+    return float(match.group(1)) if match else None
+
+
 def generate_answer(prompt: str) -> Generation:
     """Deterministic Gemini call: temperature 0 and no thinking budget, so repeated runs of the
     evaluation give comparable answers (Gemini 2.5 Flash otherwise thinks for a variable time)."""
     if not settings.gemini_api_key:
         raise LlmGenerationError("GEMINI_API_KEY is not configured.")
 
-    response = requests.post(
-        settings.gemini_api_url,
-        headers={"x-goog-api-key": settings.gemini_api_key},
-        json={
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}},
-        },
-        timeout=30,
-    )
+    def call() -> requests.Response:
+        return requests.post(
+            settings.gemini_api_url,
+            headers={"x-goog-api-key": settings.gemini_api_key},
+            json={
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}},
+            },
+            timeout=30,
+        )
 
+    response = call()
+    # 503 means the model is briefly overloaded; it usually clears within seconds.
+    for overload_wait in OVERLOAD_RETRY_WAITS_S:
+        if response.status_code != 503:
+            break
+        time.sleep(overload_wait)
+        response = call()
+    if response.status_code == 429:
+        wait = _retry_delay(response)
+        if wait is not None and wait <= MAX_RETRY_WAIT_S:
+            time.sleep(wait)
+            response = call()
+    if response.status_code == 429:
+        # The free tier limits both requests per minute and per day (gemini-2.5-flash: 5/min, 20/day).
+        wait = _retry_delay(response)
+        if wait is None:
+            raise LlmGenerationError("Gemini quota exceeded.")
+        if wait > 120:
+            raise LlmGenerationError(f"Gemini daily quota used up; it resets in about {wait / 3600:.1f} hours.")
+        raise LlmGenerationError(f"Gemini per-minute limit reached; retry in about {wait:.0f} s.")
     if not response.ok:
-        raise LlmGenerationError(f"Gemini API error: {response.status_code} {response.text}")
+        raise LlmGenerationError(f"Gemini API error: {response.status_code} {response.text[:300]}")
 
     data = response.json()
     try:

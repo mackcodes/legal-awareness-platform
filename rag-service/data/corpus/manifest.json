@@ -1,5 +1,5 @@
 {
- "corpus_version": "COI as on 1st May, 2024 + BNS as on 6th October, 2025 + indianconstitution-pypi 1.5.3 + app-data",
+ "corpus_version": "Corpus of 27 Oct 2026: COI as on 1 May 2024; Acts from India Code and Gazette prints incl. Labour Codes; BPR&D IPC-BNS mapping; app-data",
  "parts": [
   "app-data.json",
   "bns.json",
@@ -9,19 +9,23 @@
   "consumer.json",
   "cpc.json",
   "indianconstitution-pypi.json",
+  "ir-code.json",
   "it-act.json",
-  "rti.json"
+  "osh-code.json",
+  "rti.json",
+  "ss-code.json",
+  "wages.json"
  ],
- "total_items": 2120,
+ "total_items": 2600,
  "bns_sections_linked_to_ipc": 306,
- "items_with_lay_terms": 30,
+ "items_with_lay_terms": 45,
  "counts": {
   "app-data | act_section | en": 88,
   "bprd-handbook | act_section | en": 6,
   "coi-official | article | en": 502,
   "coi-official | preamble | en": 1,
   "coi-official | schedule | en": 12,
-  "gazette | act_section | en": 808,
+  "gazette | act_section | en": 1288,
   "indiacode | act_section | en": 685,
   "indianconstitution-pypi | article | en": 1,
   "indianconstitution-pypi | judgment | en": 17
