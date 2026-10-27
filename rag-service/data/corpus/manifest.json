@@ -1,15 +1,29 @@
 {
- "corpus_version": "indianconstitution-pypi 1.5.3 + app-data",
+ "corpus_version": "COI as on 1st May, 2024 + BNS as on 6th October, 2025 + indianconstitution-pypi 1.5.3 + app-data",
  "parts": [
   "app-data.json",
-  "indianconstitution-pypi.json"
+  "bns.json",
+  "bnss.json",
+  "bsa.json",
+  "coi-official.json",
+  "consumer.json",
+  "cpc.json",
+  "indianconstitution-pypi.json",
+  "it-act.json",
+  "rti.json"
  ],
- "total_items": 614,
+ "total_items": 2120,
+ "bns_sections_linked_to_ipc": 306,
+ "items_with_lay_terms": 30,
  "counts": {
-  "app-data | act_section | en": 127,
-  "app-data | article | en": 5,
-  "indianconstitution-pypi | article | en": 464,
-  "indianconstitution-pypi | judgment | en": 17,
-  "indianconstitution-pypi | preamble | en": 1
+  "app-data | act_section | en": 88,
+  "bprd-handbook | act_section | en": 6,
+  "coi-official | article | en": 502,
+  "coi-official | preamble | en": 1,
+  "coi-official | schedule | en": 12,
+  "gazette | act_section | en": 808,
+  "indiacode | act_section | en": 685,
+  "indianconstitution-pypi | article | en": 1,
+  "indianconstitution-pypi | judgment | en": 17
  }
 }

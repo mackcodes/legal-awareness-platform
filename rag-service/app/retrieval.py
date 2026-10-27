@@ -28,6 +28,11 @@ class HybridRetriever:
             if m.get("source_type") == "act_section"
             for alias in m.get("act_aliases", [])
         }
+        # "IPC 302", "BNS section 103": a section number written straight after an act's name.
+        aliases = "|".join(re.escape(a) for a in sorted(self.act_aliases, key=len, reverse=True))
+        self.alias_section_pattern = re.compile(
+            rf"\b(?:{aliases})\s*(?:sections?|secs?\.|s\.)?\s*{_NUMBER_LIST}", re.IGNORECASE
+        ) if aliases else None
 
     def _named_acts(self, query: str) -> Set[str]:
         lowered = query.lower()
@@ -42,31 +47,40 @@ class HybridRetriever:
 
         Article numbers match articles only. Section numbers match act sections only, restricted to
         the act(s) the query names; an unnamed section number is used only when exactly one act has it.
+        A named repealed section also brings in the section that replaced it ("IPC 302" -> BNS 103).
         """
         articles = _numbers(ARTICLE_PATTERN, query)
         sections = _numbers(SECTION_PATTERN, query)
+        if self.alias_section_pattern:
+            sections |= _numbers(self.alias_section_pattern, query)
         if not articles and not sections:
             return []
 
+        named_acts = self._named_acts(query)
         article_hits = []
         section_hits = []
+        successor_hits = []
         for m in self.vector_store.metadata:
             number = str(m.get("number") or "").lower()
             if m.get("source_type") == "article" and number in articles:
                 article_hits.append(m)
             elif m.get("source_type") == "act_section" and number in sections:
                 section_hits.append(m)
+            elif any(r["act"] in named_acts and r["number"].lower() in sections for r in m.get("replaces", [])):
+                successor_hits.append(m)
 
-        named_acts = self._named_acts(query)
         if named_acts:
             section_hits = [m for m in section_hits if m["act_or_case_name"] in named_acts]
         elif len({m["act_or_case_name"] for m in section_hits}) > 1:
             section_hits = []
 
-        return article_hits + section_hits
+        return article_hits + section_hits + successor_hits
 
     def hybrid_search(self, query: str, top_k: int) -> List[Dict[str, Any]]:
-        """Weighted fusion of max-normalised dense and BM25 scores.
+        """Weighted fusion of min-max-normalised dense and BM25 scores.
+
+        Min-max rather than divide-by-max, because e5 cosines are compressed into a narrow band
+        (~0.80-0.85): dividing by the max gives every candidate ~1.0 and lets BM25 noise decide.
 
         Returns [] when the best raw dense cosine is below settings.min_relevance: the fused scores
         are normalised per query, so they cannot tell an off-topic query from an on-topic one.
@@ -78,11 +92,14 @@ class HybridRetriever:
 
         combined: Dict[str, Tuple[Dict[str, Any], float]] = {}
         for results, weight in ((dense_results, settings.dense_weight), (sparse_results, settings.sparse_weight)):
-            max_score = max((score for _, score in results), default=0.0) or 1.0
+            if not results:
+                continue
+            low = min(score for _, score in results)
+            spread = max(score for _, score in results) - low or 1.0
             for meta, score in results:
                 key = meta["chunk_id"]
                 prev = combined[key][1] if key in combined else 0.0
-                combined[key] = (meta, prev + weight * score / max_score)
+                combined[key] = (meta, prev + weight * (score - low) / spread)
 
         ranked = sorted(combined.values(), key=lambda x: x[1], reverse=True)[:top_k]
         return [{**meta, "score": score} for meta, score in ranked]

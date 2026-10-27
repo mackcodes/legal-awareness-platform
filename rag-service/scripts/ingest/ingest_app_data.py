@@ -16,6 +16,13 @@ from typing import Any, Dict, List
 
 from common import REPO_DIR, write_part
 
+# Acts in acts.ts that are no longer in force, keyed by act id. Source: BNS s. 358 and the BNS
+# commencement notification (both in the corpus via ingest_acts.py).
+REPEALED = {
+    "ipc": "Repealed by section 358 of the Bharatiya Nyaya Sanhita, 2023 with effect from 1 July 2024. "
+    "Offences committed on or after that date are governed by the BNS.",
+}
+
 _EXPORT_JS = """
 const { CONSTITUTION_PARTS } = await import('./app/data/constitution.ts');
 const { INDIAN_ACTS } = await import('./app/data/acts.ts');
@@ -69,10 +76,11 @@ def act_items(acts: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "audience_level": "citizen",
             "topic_tags": [act["category"]],
             "language": "en",
-            "status": "active",
+            "status": "repealed" if act["id"] in REPEALED else "active",
+            "amendment_notes": [REPEALED[act["id"]]] if act["id"] in REPEALED else [],
             "source_dataset": "app-data",
         }
-        objectives = "\n".join(f"- {o}" for o in act.get("objectives", []))
+        objectives ="\n".join(f"- {o}" for o in act.get("objectives", []))
         items.append(
             {
                 **base,

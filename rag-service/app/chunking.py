@@ -27,9 +27,28 @@ def chunk_header(item: Dict[str, Any]) -> str:
     number = item.get("number")
 
     if source_type == "article":
-        return f"{name}, Article {number}: {title}"
-    if source_type == "act_section" and number:
-        return f"{name}, Section {number}: {title}"
+        header = f"{name}, Article {number}: {title}"
+    elif source_type == "act_section" and number:
+        header = f"{name}, Section {number}: {title}"
+    else:
+        header = None
+    if header:
+        if item.get("status") == "omitted":
+            header += " [OMITTED — not current law]"
+        elif item.get("status") == "repealed":
+            header += " [REPEALED — not current law]"
+        if item.get("replaces"):
+            header += f" (formerly IPC {', '.join(r['number'] for r in item['replaces'])})"
+        if item.get("replaced_by"):
+            header += f" (now {', '.join(i.replace('bns-s', 'BNS ') for i in item['replaced_by'])})"
+        if item.get("source_edition"):
+            # "As on 1st May, 2024" / "As enacted (25th December, 2023)" / "As amended up to 2017"
+            edition = item["source_edition"]
+            header += f" (text {edition[0].lower()}{edition[1:]})"
+        # Everyday words the statute never uses ("FIR"), so search can match how people ask.
+        if item.get("lay_terms"):
+            header += f" [also called: {'; '.join(item['lay_terms'])}]"
+        return header
     if source_type == "judgment":
         header = f"{name} ({item.get('decision_year', '')})"
         if item.get("citation"):
@@ -44,6 +63,10 @@ def chunk_header(item: Dict[str, Any]) -> str:
 def chunk_corpus_item(item: Dict[str, Any]) -> List[Dict[str, Any]]:
     """Turn one corpus item into one or more chunk records carrying metadata."""
     base_text = item.get("original_text") or item.get("simplified_text") or ""
+    # Amendment footnotes answer "when/why was this added" questions and carry facts such as
+    # "struck down by the Supreme Court", so they are indexed with the text.
+    if item.get("amendment_notes"):
+        base_text += "\nAmendment notes:\n" + "\n".join(f"- {n}" for n in item["amendment_notes"])
     header = chunk_header(item)
 
     chunk_records = []
@@ -58,6 +81,7 @@ def chunk_corpus_item(item: Dict[str, Any]) -> List[Dict[str, Any]]:
                 "title": item.get("title"),
                 "act_or_case_name": item.get("act_or_case_name"),
                 "act_aliases": item.get("act_aliases", []),
+                "replaces": item.get("replaces", []),
                 "number": item.get("number"),
                 "year": item.get("year"),
                 "status": item.get("status", "active"),
@@ -65,6 +89,7 @@ def chunk_corpus_item(item: Dict[str, Any]) -> List[Dict[str, Any]]:
                 "topic_tags": item.get("topic_tags", []),
                 "language": item.get("language", "en"),
                 "source_dataset": item.get("source_dataset"),
+                "source_edition": item.get("source_edition"),
                 "corpus_version": item.get("corpus_version"),
             }
         )

@@ -1,9 +1,9 @@
 from typing import List, Literal, Optional
 from pydantic import BaseModel
 
+from .intent import Intent
 
 AudienceLevel = Literal["school", "citizen", "law_student"]
-Intent = Literal["DEFINE", "EXPLAIN", "WHY", "EXAMPLE", "CASE", "FUN", "LAW", "KIDS", "UNKNOWN"]
 
 
 class ChatRequest(BaseModel):
@@ -12,6 +12,7 @@ class ChatRequest(BaseModel):
     audience_level: AudienceLevel = "citizen"
     tenant_id: Optional[str] = None
     top_k: Optional[int] = None
+    use_safety: bool = True  # False: answer advice-seeking questions instead of refusing
 
 
 class Citation(BaseModel):
@@ -19,6 +20,10 @@ class Citation(BaseModel):
     title: str
     number: Optional[str] = None
     act_or_case_name: Optional[str] = None
+    label: Optional[str] = None  # "S1": the tag used in the answer text
+    item_id: Optional[str] = None
+    source_edition: Optional[str] = None  # e.g. "As on 1st May, 2024"
+    status: Optional[str] = None  # "active" | "omitted" | "repealed"
 
 
 class RetrievedChunk(BaseModel):
@@ -31,7 +36,7 @@ class RetrievedChunk(BaseModel):
 class ChatResponse(BaseModel):
     success: bool
     answer: str
-    citations: List[Citation] = []
+    citations: List[Citation] = []  # only the sources the answer cites
     retrieved_chunks: List[RetrievedChunk] = []
     intent: Intent = "UNKNOWN"
     latency_ms: int = 0
