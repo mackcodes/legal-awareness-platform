@@ -1,0 +1,15 @@
+{
+ "corpus_version": "indianconstitution-pypi 1.5.3 + app-data",
+ "parts": [
+  "app-data.json",
+  "indianconstitution-pypi.json"
+ ],
+ "total_items": 614,
+ "counts": {
+  "app-data | act_section | en": 127,
+  "app-data | article | en": 5,
+  "indianconstitution-pypi | article | en": 464,
+  "indianconstitution-pypi | judgment | en": 17,
+  "indianconstitution-pypi | preamble | en": 1
+ }
+}

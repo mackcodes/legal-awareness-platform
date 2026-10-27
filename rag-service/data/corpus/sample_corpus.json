@@ -1,0 +1,44 @@
+[
+  {
+    "id": "const-art-21",
+    "source_type": "article",
+    "title": "Protection of life and personal liberty",
+    "act_or_case_name": "Constitution of India",
+    "number": "21",
+    "year": "1950",
+    "original_text": "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+    "simplified_text": "The government cannot take away your life or freedom unless it follows a fair legal process.",
+    "audience_level": "citizen",
+    "topic_tags": ["fundamental-rights", "right-to-life"],
+    "language": "en",
+    "source_dataset": "indianconstitution-pypi"
+  },
+  {
+    "id": "const-art-19",
+    "source_type": "article",
+    "title": "Protection of certain rights regarding freedom of speech, etc.",
+    "act_or_case_name": "Constitution of India",
+    "number": "19",
+    "year": "1950",
+    "original_text": "All citizens shall have the right to freedom of speech and expression, to assemble peaceably and without arms, to form associations or unions, to move freely throughout the territory of India, to reside and settle in any part of the territory of India, and to practise any profession, or to carry on any occupation, trade or business.",
+    "simplified_text": "Every citizen has the right to speak freely, gather peacefully, form groups, travel and live anywhere in India, and choose any legal profession or business.",
+    "audience_level": "citizen",
+    "topic_tags": ["fundamental-rights", "freedom-of-speech"],
+    "language": "en",
+    "source_dataset": "indianconstitution-pypi"
+  },
+  {
+    "id": "case-kesavananda-bharati",
+    "source_type": "judgment",
+    "title": "Kesavananda Bharati v. State of Kerala",
+    "act_or_case_name": "Kesavananda Bharati v. State of Kerala",
+    "number": "AIR 1973 SC 1461",
+    "year": "1973",
+    "original_text": "The Supreme Court held that Parliament's power to amend the Constitution under Article 368 does not extend to altering its 'basic structure', establishing the Basic Structure Doctrine.",
+    "simplified_text": "This landmark case says Parliament can change the Constitution, but it cannot change its core basic structure, such as democracy, rule of law, and fundamental rights.",
+    "audience_level": "law_student",
+    "topic_tags": ["basic-structure-doctrine", "constitutional-amendment"],
+    "language": "en",
+    "source_dataset": "kanoongpt-case-laws"
+  }
+]

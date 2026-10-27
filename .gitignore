@@ -36,3 +36,25 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# private RAG planning docs
+/RAG_IMPLEMENTATION_GUIDE.md
+/RAG_PUBLICATION_PLAN.md
+/RAG_RESEARCH_PAPER.md
+/STATUS.md
+
+# python (rag-service)
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.pytest_cache/
+.ipynb_checkpoints/
+# rag-service data rules (index, logs, raw downloads) live in rag-service/.gitignore
+
+# editors and OS
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+*.log
