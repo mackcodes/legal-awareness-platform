@@ -90,6 +90,24 @@ ACTS = [
             ("OSH Code", "Occupational Safety, Health and Working Conditions Code"), "2020", "gazette", "osh-code",
             "gazette", act_number="37 OF 2020", edition="As enacted (28th September, 2020)",
             notices=(("1", "labour_laws/68ed1ca2d97e2849c07e9972370577b6.pdf"),)),
+    ActSpec("dv-act", "domestic_violence/A2005-43.pdf", "The Protection of Women from Domestic Violence Act, 2005",
+            ("Domestic Violence Act", "DV Act", "PWDVA", "Protection of Women from Domestic Violence Act"), "2005",
+            "indiacode", "domestic-violence-act", "indiacode"),
+    ActSpec("motor", "motor_vehicle_acts/The motor vehicle acts 1988.pdf", "The Motor Vehicles Act, 1988",
+            ("MV Act", "Motor Vehicles Act", "Motor Vehicle Act", "MVA"), "1988", "indiacode", "motor-act", "indiacode"),
+    ActSpec("rte", "rte/A2009-35.pdf", "The Right of Children to Free and Compulsory Education Act, 2009",
+            ("RTE", "RTE Act", "Right to Education Act", "Right of Children to Free and Compulsory Education Act"),
+            "2009", "indiacode", "rte-act", "indiacode"),
+    # Legislative Department print with the 2016 amendments; the Act has not been amended since.
+    ActSpec("posh", "posh/DoE_Prevention_sexual_harassment.pdf",
+            "The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013",
+            ("POSH", "POSH Act", "Sexual Harassment of Women at Workplace Act"), "2013", "indiacode", "posh-act",
+            "indiacode", edition="As amended up to 2016"),
+    # Hindi text first, then the English Legislative Department print ("Last update- 28-02-2023").
+    ActSpec("pocso", "pocso/Protection of Children From Sexual Offences Act, 2012.pdf",
+            "The Protection of Children from Sexual Offences Act, 2012",
+            ("POCSO", "POCSO Act", "Protection of Children from Sexual Offences Act"), "2012", "indiacode",
+            "pocso-act", "indiacode", edition="As on 28th February, 2023"),
 ]
 
 # India Code layout
@@ -125,6 +143,7 @@ _END_OF_ACT = re.compile(r"STATEMENT OF OBJECTS AND REASONS|Legislative Counsel|
 _MAX_SECTION_GAP = 30
 _DATE_IN_NAME = re.compile(r"(\d{1,2}(?:st|nd|rd|th)?\s+[A-Za-z]+\s+\d{4})")
 _AS_ON = re.compile(r"\[(As on [^\]]+)\]")
+_STATE_AMENDMENT = re.compile(r"^[A-Z][A-Za-z ]{2,40} Amendment of (?:section|sub-section|the)\b")
 
 
 def edition(spec: ActSpec, doc: fitz.Document, pdf: Path) -> str:
@@ -318,7 +337,7 @@ def _act_pages(spec: ActSpec, doc: fitz.Document) -> range:
         return range(mine[0], later[0] if later else doc.page_count)
     start = next(
         i for i, p in enumerate(doc)
-        if re.search(r"(?m)^\s*(?:\d\[)?1\.\s*Short title", p.get_text())
+        if re.search(r"(?m)^\s*(?:\d\[)?1\.\s*(?:\d\[)?Short title", p.get_text())  # "1. 1[Short title" (amended)
         and not re.search(r"(?m)ARRANGEMENT OF SECTIONS|^\s*SECTIONS\s*$", p.get_text())
     )
     return range(start, doc.page_count)
@@ -400,18 +419,26 @@ def _attach_margin_titles(sections: List[Dict[str, Any]], margins: List[Tuple[in
 def finish(spec: ActSpec, section: Dict[str, Any], footnotes: Dict[Tuple[int, str], str], stamp: str) -> Dict[str, Any]:
     notes: List[str] = []
     texts = []
-    for page_no, text in section["paragraphs"]:
+    title = section["title"] or ""
+    for page_no, text in [(section["page"], title)] + section["paragraphs"]:
         for number in _MARKER.findall(text):
             note = footnotes.get((page_no, number))
             if note and note not in notes:
                 notes.append(note)
-        texts.append(_MARKER.sub("", text).strip())
-    text = "\n".join(t for t in texts if t)
+    for _, text in section["paragraphs"]:
+        text = _MARKER.sub("", text).strip()
+        # India Code prints state amendments after the section; they are not the central text.
+        if _STATE_AMENDMENT.match(text):
+            notes.append(f"State amendment: {text}")
+        elif text:
+            texts.append(text)
+    text = "\n".join(texts)
+    title = re.sub(r"[\[\]]", "", _MARKER.sub("", title)).strip()  # brackets only mark amended words
     chapter = section["chapter"]
     return {
         "id": f"{spec.id_prefix}-s{section['number']}",
         "source_type": "act_section",
-        "title": section["title"] or f"Section {section['number']}",
+        "title": title or f"Section {section['number']}",
         "act_or_case_name": spec.name,
         "act_aliases": list(spec.aliases),
         "number": section["number"],

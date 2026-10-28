@@ -21,10 +21,8 @@ CASES: List[Dict[str, Any]] = [
     {"q": "Explain Article 21", "cites": ["const-art-21"], "not_cites": ["it-act-s21"]},
     {"q": "Compare Article 14 and Article 21", "cites": ["const-art-14", "const-art-21"]},
     {"q": "What did the Kesavananda Bharati case decide?", "cites": ["sc-1973-kesavananda-bharati"]},
-    {"q": "What did the Kesavananda Bharati case decide?", "cites": ["const-art-368"],
-     "known_gap": "needs the case-to-article links (guide Phase 3)"},
-    {"q": "Is A.K. Gopalan still good law?", "says_any": ["overruled", "Maneka"],
-     "known_gap": "needs overruled-by data in the case links (guide Phase 3)"},
+    {"q": "What did the Kesavananda Bharati case decide?", "cites": ["const-art-368"]},
+    {"q": "Is A.K. Gopalan still good law?", "says_any": ["overruled", "Maneka"]},
     {"q": "When was Article 21A added?", "cites": ["const-art-21A"], "says_any": ["Eighty-sixth", "86th"]},
     {"q": "अनुच्छेद 21 क्या है?", "cites": ["const-art-21"]},
     {"q": "What's the weather today?", "max_citations": 0},
@@ -37,6 +35,10 @@ CASES: List[Dict[str, Any]] = [
      "says_any": ["struck down"]},
     {"q": "How do I file an FIR?", "cites": ["bnss-s173"]},
     {"q": "How do I file an RTI application?", "cites": ["rti-act-s6"]},
+    {"q": "What is the penalty for riding a motorcycle without a helmet?", "cites": ["motor-act-s194D"]},
+    {"q": "Who must report a sexual offence against a child?", "cites": ["pocso-act-s19"]},
+    {"q": "Where can a woman complain about sexual harassment at work?", "cites": ["posh-act-s9"]},
+    {"q": "Is it mandatory for police to register an FIR?", "cites": ["sc-2013-lalita-kumari"]},
 ]
 
 

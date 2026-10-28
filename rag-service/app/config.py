@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     )
     embedding_model_name: str = "intfloat/multilingual-e5-small"
     corpus_path: str = "data/corpus/full_corpus.json"
-    corpus_version: str = "Corpus of 27 Oct 2026: COI as on 1 May 2024; Acts from India Code and Gazette prints incl. Labour Codes; BPR&D IPC-BNS mapping; app-data"
+    corpus_version: str = "Corpus of 28 Oct 2026: COI as on 1 May 2024; Acts from India Code and Gazette prints incl. Labour Codes, MV Act, POCSO, POSH, DV Act; BPR&D IPC-BNS mapping; 34 SC judgments (S.C.R. headnotes, AWS Open Data); app-data"
     index_dir: str = "data/index"
     top_k: int = 5
     dense_weight: float = 0.6

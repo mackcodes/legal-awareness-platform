@@ -54,8 +54,11 @@ def chunk_header(item: Dict[str, Any]) -> str:
         if item.get("citation"):
             header += f", {item['citation']}"
         if item.get("related_articles"):
-            numbers = [a.removeprefix("const-art-") for a in item["related_articles"]]
-            header += f". Articles: {', '.join(numbers)}"
+            names = [
+                f"Article {a.removeprefix('const-art-')}" if a.startswith("const-art-") else a.replace("-s", " ").upper()
+                for a in item["related_articles"]
+            ]
+            header += f". Provisions: {', '.join(names)}"
         return header + "."
     return f"{name}: {title}" if title else name
 
@@ -82,6 +85,7 @@ def chunk_corpus_item(item: Dict[str, Any]) -> List[Dict[str, Any]]:
                 "act_or_case_name": item.get("act_or_case_name"),
                 "act_aliases": item.get("act_aliases", []),
                 "replaces": item.get("replaces", []),
+                "related_articles": item.get("related_articles", []),
                 "number": item.get("number"),
                 "year": item.get("year"),
                 "status": item.get("status", "active"),

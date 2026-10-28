@@ -111,6 +111,7 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
         "top_k": top_k,
         "use_safety": request.use_safety,
         "use_retrieval": request.use_retrieval,
+        "use_case_links": request.use_case_links,
         "practical_tips": request.practical_tips,
         "corpus_version": settings.corpus_version,
     }
@@ -126,7 +127,11 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
     personal_situation = request.use_safety and intent == "ADVICE"
     record["personal_situation"] = personal_situation
 
-    retrieved = _retriever.retrieve(request.question, top_k=top_k) if request.use_retrieval else []
+    retrieved = (
+        _retriever.retrieve(request.question, top_k=top_k, use_case_links=request.use_case_links)
+        if request.use_retrieval
+        else []
+    )
     prompt, sources = build_grounded_prompt(
         question=request.question,
         retrieved_chunks=retrieved,

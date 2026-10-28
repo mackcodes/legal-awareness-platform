@@ -10,6 +10,8 @@ _NUMBER_LIST = r"(\d+[a-zA-Z]{0,3}(?:\s*(?:,|and|&|or)\s*\d+[a-zA-Z]{0,3})*)"
 ARTICLE_PATTERN = re.compile(rf"(?:\barticles?|\barts?\.|अनुच्छेद)\s*{_NUMBER_LIST}", re.IGNORECASE)
 SECTION_PATTERN = re.compile(rf"(?:\bsections?|\bsecs?\.|धारा)\s*{_NUMBER_LIST}", re.IGNORECASE)
 _NUMBER = re.compile(r"\d+[a-zA-Z]{0,3}")
+# Linked provisions added per query; links are listed most important first.
+MAX_LINKED = 3
 
 
 def _numbers(pattern: re.Pattern, query: str) -> Set[str]:
@@ -22,6 +24,10 @@ class HybridRetriever:
     def __init__(self, vector_store: FaissVectorStore, bm25_index: Bm25Index):
         self.vector_store = vector_store
         self.bm25_index = bm25_index
+        # First chunk of each item, so a judgment's linked provisions can be added by ID.
+        self.first_chunks: Dict[str, Dict[str, Any]] = {}
+        for m in vector_store.metadata:
+            self.first_chunks.setdefault(m["item_id"], m)
         self.act_aliases: Dict[str, str] = {
             alias.lower(): m["act_or_case_name"]
             for m in vector_store.metadata
@@ -105,8 +111,23 @@ class HybridRetriever:
         ranked = sorted(combined.values(), key=lambda x: x[1], reverse=True)[:top_k]
         return [{**meta, "score": score} for meta, score in ranked]
 
-    def retrieve(self, query: str, top_k: int | None = None) -> List[Dict[str, Any]]:
-        """Direct hits first (score 1.0, never truncated), then hybrid results up to top_k."""
+    def linked_provisions(self, results: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """The provisions linked to retrieved judgments (data/corpus/case_links.json), so "What did
+        Kesavananda decide?" also brings Article 368. Up to MAX_LINKED, each scored like its judgment."""
+        present = {r["item_id"] for r in results}
+        added: List[Dict[str, Any]] = []
+        for hit in results:
+            for item_id in hit.get("related_articles", []):
+                if len(added) >= MAX_LINKED:
+                    return added
+                if item_id not in present and item_id in self.first_chunks:
+                    present.add(item_id)
+                    added.append({**self.first_chunks[item_id], "score": hit["score"]})
+        return added
+
+    def retrieve(self, query: str, top_k: int | None = None, use_case_links: bool = True) -> List[Dict[str, Any]]:
+        """Direct hits first (score 1.0, never truncated), then hybrid results up to top_k, then the
+        provisions linked to any retrieved judgment."""
         top_k = top_k or settings.top_k
 
         results = [{**m, "score": 1.0} for m in self.direct_lookup(query)]
@@ -116,4 +137,6 @@ class HybridRetriever:
                 break
             if hit["chunk_id"] not in seen:
                 results.append(hit)
+        if use_case_links:
+            results += self.linked_provisions(results)
         return results

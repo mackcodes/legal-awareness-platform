@@ -67,6 +67,27 @@ def apply_lay_terms(corpus: List[Dict[str, Any]]) -> int:
     return len(terms)
 
 
+def apply_case_links(corpus: List[Dict[str, Any]]) -> int:
+    """Apply data/corpus/case_links.json both ways: each judgment's `related_articles` (replacing
+    any from the PyPI data) and each linked provision's `related_cases`. Unknown IDs are an error."""
+    path = CORPUS_DIR / "case_links.json"
+    if not path.exists():
+        return 0
+    with path.open(encoding="utf-8") as f:
+        links = json.load(f)["links"]
+    by_id = {item["id"]: item for item in corpus}
+    unknown = sorted({i for case, targets in links.items() for i in [case, *targets]} - set(by_id))
+    if unknown:
+        raise ValueError(f"case_links.json names items not in the corpus: {unknown}")
+    for item in corpus:
+        if item["source_type"] == "judgment":
+            item["related_articles"] = links.get(item["id"], [])
+    for case, targets in links.items():
+        for target in targets:
+            by_id[target].setdefault("related_cases", []).append(case)
+    return len(links)
+
+
 def apply_ipc_mapping(corpus: List[Dict[str, Any]]) -> int:
     """Apply ingest_ipc_bns_mapping.py's output. BNS items get `replaces` and IPC items
     `replaced_by`; IPC sections the BPR&D table lists as deleted get an item saying the BNS has no
@@ -134,6 +155,7 @@ def main() -> None:
     corpus = merge(items)
     linked = apply_ipc_mapping(corpus)
     with_terms = apply_lay_terms(corpus)
+    cases_linked = apply_case_links(corpus)
     check(corpus)
     for item in corpus:
         item["corpus_version"] = settings.corpus_version
@@ -147,6 +169,7 @@ def main() -> None:
         "total_items": len(corpus),
         "bns_sections_linked_to_ipc": linked,
         "items_with_lay_terms": with_terms,
+        "judgments_with_links": cases_linked,
         "counts": dict(sorted(counts.items())),
     }
 
