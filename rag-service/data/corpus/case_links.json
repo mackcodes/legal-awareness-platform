@@ -1,5 +1,5 @@
 {
- "_about": "Case-to-provision links (RAG_IMPLEMENTATION_GUIDE.md Phase 3). Each judgment lists the provisions it decided, most important first, taken from the Articles named in its S.C.R. headnote catchwords. Judgments on CrPC sections link to the BNSS section that replaced them (Lalita Kumari: CrPC 154 -> BNSS 173; Arnesh Kumar: CrPC 41 -> BNSS 35; Shah Bano: CrPC 125 -> BNSS 144). merge_corpus.py applies them both ways: judgments get related_articles, provisions get related_cases. Drafted by Claude on 28 Oct 2026; needs review by a second person before the evaluation.",
+ "_about": "Case-to-provision links (RAG_IMPLEMENTATION_GUIDE.md Phase 3). Each judgment lists the provisions it decided, most important first, taken from the Articles named in its S.C.R. headnote catchwords. Judgments on CrPC sections link to the BNSS section that replaced them (Lalita Kumari: CrPC 154 -> BNSS 173; Arnesh Kumar: CrPC 41 -> BNSS 35; Shah Bano: CrPC 125 -> BNSS 144). merge_corpus.py applies them both ways: judgments get related_articles, provisions get related_cases. Drafted on 28 Oct 2026; needs review by a second person before the evaluation.",
  "links": {
   "sc-1950-a-k-gopalan": ["const-art-21", "const-art-22", "const-art-19"],
   "sc-1962-prem-chand-garg": ["const-art-32", "const-art-142", "const-art-145"],
