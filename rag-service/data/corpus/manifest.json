@@ -28,14 +28,13 @@
  "judgments_with_links": 34,
  "counts": {
   "app-data | act_section | en": 37,
-  "aws-sc | judgment | en": 17,
+  "aws-sc | judgment | en": 34,
   "bprd-handbook | act_section | en": 6,
   "coi-official | article | en": 502,
   "coi-official | preamble | en": 1,
   "coi-official | schedule | en": 12,
   "gazette | act_section | en": 1288,
   "indiacode | act_section | en": 1094,
-  "indianconstitution-pypi | article | en": 1,
-  "indianconstitution-pypi | judgment | en": 17
+  "indianconstitution-pypi | article | en": 1
  }
 }

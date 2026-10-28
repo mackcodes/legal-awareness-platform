@@ -237,9 +237,12 @@ def segment(paragraphs: List[str]) -> Iterator[Segment]:
             if current:
                 yield current
             last_article = _article_key(number)
-            title = head.group(4).strip("[]. ")
+            # A marker can also sit inside the title ("with respect to 4[the State of ..."); its
+            # footnote is kept by moving the marker to the text, where footnotes are resolved.
+            title_markers = _MARKER.findall(head.group(4))
+            title = re.sub(r"[\[\]]", "", _MARKER.sub("", head.group(4))).strip(". ")
             current = Segment("article", number, title, part, page)
-            markers = "".join(f"{m}[" for m in (head.group(1) or glued, head.group(3)) if m)
+            markers = "".join(f"{m}[" for m in (head.group(1) or glued, head.group(3), *title_markers) if m)
             current.paragraphs.append((page, markers + head.group(5).strip()))
             continue
 

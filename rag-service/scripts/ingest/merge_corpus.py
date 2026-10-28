@@ -18,7 +18,9 @@ sys.path.append(str(SERVICE_DIR))
 from app.config import settings  # noqa: E402
 
 # Most authoritative first.
-PRECEDENCE = ["coi-official", "indiacode", "gazette", "bprd-handbook", "indianconstitution-pypi", "aws-sc", "driti", "app-data"]
+# aws-sc (the Supreme Court's own records) outranks the PyPI case list, which has wrong parties and
+# years for some cases; PyPI still supplies each case's plain-language holding (`simplified_text`).
+PRECEDENCE = ["coi-official", "indiacode", "gazette", "bprd-handbook", "aws-sc", "indianconstitution-pypi", "driti", "app-data"]
 _DEVANAGARI = re.compile(r"[ऀ-ॿ]")
 # Must equal the IPC's act_or_case_name in app-data (acts.ts fullName) so retrieval can match it.
 IPC_ACT = "The Indian Penal Code, 1860"
