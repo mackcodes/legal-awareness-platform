@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Set, Tuple
 from .bm25_index import Bm25Index
 from .config import settings
 from .embeddings import embed_query
+from .reranker import rerank
 from .vector_store import FaissVectorStore
 
 _NUMBER_LIST = r"(\d+[a-zA-Z]{0,3}(?:\s*(?:,|and|&|or)\s*\d+[a-zA-Z]{0,3})*)"
@@ -83,19 +84,26 @@ class HybridRetriever:
         # Current law first: "IPC 302" puts BNS 103 ahead of the repealed IPC entry, so it becomes [S1].
         return article_hits + successor_hits + section_hits
 
-    def hybrid_search(self, query: str, top_k: int) -> List[Dict[str, Any]]:
-        """Weighted fusion of min-max-normalised dense and BM25 scores.
+    def hybrid_search(
+        self, query: str, top_k: int, use_dense: bool = True, use_sparse: bool = True
+    ) -> List[Dict[str, Any]]:
+        """Weighted fusion of min-max-normalised dense and BM25 scores; either side can be switched off
+        (System B is dense only).
 
         Min-max rather than divide-by-max, because e5 cosines are compressed into a narrow band
         (~0.80-0.85): dividing by the max gives every candidate ~1.0 and lets BM25 noise decide.
 
         Returns [] when the best raw dense cosine is below settings.min_relevance: the fused scores
         are normalised per query, so they cannot tell an off-topic query from an on-topic one.
+        The floor applies even when use_dense is off, so every system rejects the same off-topic
+        queries and the switches change only the ranking.
         """
         dense_results = self.vector_store.search(embed_query(query), top_k=top_k * 2)
         if not dense_results or dense_results[0][1] < settings.min_relevance:
             return []
-        sparse_results = self.bm25_index.search(query, top_k=top_k * 2)
+        if not use_dense:
+            dense_results = []
+        sparse_results = self.bm25_index.search(query, top_k=top_k * 2) if use_sparse else []
 
         combined: Dict[str, Tuple[Dict[str, Any], float]] = {}
         for results, weight in ((dense_results, settings.dense_weight), (sparse_results, settings.sparse_weight)):
@@ -125,14 +133,27 @@ class HybridRetriever:
                     added.append({**self.first_chunks[item_id], "score": hit["score"]})
         return added
 
-    def retrieve(self, query: str, top_k: int | None = None, use_case_links: bool = True) -> List[Dict[str, Any]]:
+    def retrieve(
+        self,
+        query: str,
+        top_k: int | None = None,
+        use_case_links: bool = True,
+        use_dense: bool = True,
+        use_sparse: bool = True,
+        use_reranker: bool = False,
+    ) -> List[Dict[str, Any]]:
         """Direct hits first (score 1.0, never truncated), then hybrid results up to top_k, then the
-        provisions linked to any retrieved judgment."""
+        provisions linked to any retrieved judgment. With use_reranker, the hybrid results are the best
+        top_k of settings.rerank_candidates by cross-encoder score."""
         top_k = top_k or settings.top_k
 
         results = [{**m, "score": 1.0} for m in self.direct_lookup(query)]
         seen = {r["chunk_id"] for r in results}
-        for hit in self.hybrid_search(query, top_k):
+        pool = settings.rerank_candidates if use_reranker else top_k
+        hits = self.hybrid_search(query, pool, use_dense=use_dense, use_sparse=use_sparse)
+        if use_reranker:
+            hits = rerank(query, [h for h in hits if h["chunk_id"] not in seen])
+        for hit in hits:
             if len(results) >= top_k:
                 break
             if hit["chunk_id"] not in seen:

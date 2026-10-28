@@ -14,6 +14,9 @@ class ChatRequest(BaseModel):
     top_k: Optional[int] = None
     use_safety: bool = True  # False: answer advice-seeking questions instead of refusing
     use_retrieval: bool = True  # False: System A0, the same prompt with no sources
+    use_dense: bool = True  # False: sparse only (the out-of-scope floor still applies)
+    use_sparse: bool = True  # False: System B, dense only
+    use_reranker: bool = False  # True: Systems D and E, cross-encoder reranking of the hybrid results
     use_case_links: bool = True  # False: System E-links, no provisions added from case links
     practical_tips: bool = True  # False: System E-strict, no untagged tips from the model's own knowledge
 

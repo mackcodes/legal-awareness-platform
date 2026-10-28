@@ -111,6 +111,9 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
         "top_k": top_k,
         "use_safety": request.use_safety,
         "use_retrieval": request.use_retrieval,
+        "use_dense": request.use_dense,
+        "use_sparse": request.use_sparse,
+        "use_reranker": request.use_reranker,
         "use_case_links": request.use_case_links,
         "practical_tips": request.practical_tips,
         "corpus_version": settings.corpus_version,
@@ -128,7 +131,14 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
     record["personal_situation"] = personal_situation
 
     retrieved = (
-        _retriever.retrieve(request.question, top_k=top_k, use_case_links=request.use_case_links)
+        _retriever.retrieve(
+            request.question,
+            top_k=top_k,
+            use_case_links=request.use_case_links,
+            use_dense=request.use_dense,
+            use_sparse=request.use_sparse,
+            use_reranker=request.use_reranker,
+        )
         if request.use_retrieval
         else []
     )

@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     corpus_version: str = "Corpus of 28 Oct 2026: COI as on 1 May 2024; Acts from India Code and Gazette prints incl. Labour Codes, MV Act, POCSO, POSH, DV Act; BPR&D IPC-BNS mapping; 34 SC judgments (S.C.R. headnotes, AWS Open Data); app-data"
     index_dir: str = "data/index"
     top_k: int = 5
+    reranker_model_name: str = "BAAI/bge-reranker-v2-m3"
+    # Hybrid candidates passed to the reranker, which keeps the best top_k.
+    rerank_candidates: int = 20
     dense_weight: float = 0.6
     sparse_weight: float = 0.4
     # Floor on the raw dense cosine of the best hit; below it the query is treated as out of scope.
