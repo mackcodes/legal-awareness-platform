@@ -13,6 +13,8 @@ class ChatRequest(BaseModel):
     tenant_id: Optional[str] = None
     top_k: Optional[int] = None
     use_safety: bool = True  # False: answer advice-seeking questions instead of refusing
+    use_retrieval: bool = True  # False: System A0, the same prompt with no sources
+    practical_tips: bool = True  # False: System E-strict, no untagged tips from the model's own knowledge
 
 
 class Citation(BaseModel):

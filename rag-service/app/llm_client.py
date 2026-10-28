@@ -38,15 +38,20 @@ def generate_answer(prompt: str) -> Generation:
         raise LlmGenerationError("GEMINI_API_KEY is not configured.")
 
     def call() -> requests.Response:
-        return requests.post(
-            settings.gemini_api_url,
-            headers={"x-goog-api-key": settings.gemini_api_key},
-            json={
-                "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}},
-            },
-            timeout=30,
-        )
+        try:
+            return requests.post(
+                settings.gemini_api_url,
+                headers={"x-goog-api-key": settings.gemini_api_key},
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}},
+                },
+                timeout=30,
+            )
+        except requests.Timeout:
+            raise LlmGenerationError("Gemini did not respond within 30 s; please try again.")
+        except requests.RequestException as exc:
+            raise LlmGenerationError(f"Could not reach Gemini: {exc.__class__.__name__}.")
 
     response = call()
     # 503 means the model is briefly overloaded; it usually clears within seconds.

@@ -1,9 +1,9 @@
+import hmac
 import re
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, Header, HTTPException
 
 from .bm25_index import Bm25Index
 from .config import settings
@@ -35,14 +35,9 @@ async def lifespan(_: FastAPI):
     yield
 
 
+# No CORS middleware: browsers never call this service directly. The Next.js server route
+# (app/api/rag-chat) calls it and authenticates with the shared secret.
 app = FastAPI(title="Legal Awareness RAG Service", version="0.1.0", lifespan=lifespan)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.get("/health")
@@ -92,7 +87,11 @@ def cited_labels(answer: str) -> list[str]:
 
 
 @app.post("/chat", response_model=ChatResponse)
-def chat(request: ChatRequest) -> ChatResponse:
+def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) -> ChatResponse:
+    # Once RAG_SHARED_SECRET is set (always in deployment), only callers holding it may use the
+    # service, so nobody else can spend the Gemini quota. Unset, e.g. for local development, it is open.
+    if settings.rag_shared_secret and not hmac.compare_digest(x_rag_secret or "", settings.rag_shared_secret):
+        raise HTTPException(status_code=401, detail="Missing or invalid X-RAG-Secret header.")
     start = time.perf_counter()
 
     if _retriever is None:
@@ -111,6 +110,8 @@ def chat(request: ChatRequest) -> ChatResponse:
         "intent": intent,
         "top_k": top_k,
         "use_safety": request.use_safety,
+        "use_retrieval": request.use_retrieval,
+        "practical_tips": request.practical_tips,
         "corpus_version": settings.corpus_version,
     }
 
@@ -125,12 +126,13 @@ def chat(request: ChatRequest) -> ChatResponse:
     personal_situation = request.use_safety and intent == "ADVICE"
     record["personal_situation"] = personal_situation
 
-    retrieved = _retriever.retrieve(request.question, top_k=top_k)
+    retrieved = _retriever.retrieve(request.question, top_k=top_k) if request.use_retrieval else []
     prompt, sources = build_grounded_prompt(
         question=request.question,
         retrieved_chunks=retrieved,
         audience_level=request.audience_level,
         personal_situation=personal_situation,
+        practical_tips=request.practical_tips,
     )
 
     generation = None

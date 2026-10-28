@@ -74,7 +74,8 @@ class HybridRetriever:
         elif len({m["act_or_case_name"] for m in section_hits}) > 1:
             section_hits = []
 
-        return article_hits + section_hits + successor_hits
+        # Current law first: "IPC 302" puts BNS 103 ahead of the repealed IPC entry, so it becomes [S1].
+        return article_hits + successor_hits + section_hits
 
     def hybrid_search(self, query: str, top_k: int) -> List[Dict[str, Any]]:
         """Weighted fusion of min-max-normalised dense and BM25 scores.

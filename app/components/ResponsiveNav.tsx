@@ -8,7 +8,7 @@ import LanguageSelector from "./LanguageSelector";
 import { useTranslate } from "../hooks/useTranslate";
 
 interface ResponsiveNavProps {
-  currentPage: "dashboard" | "preamble" | "constitution" | "acts" | "quiz" | "forum";
+  currentPage: "dashboard" | "preamble" | "constitution" | "acts" | "quiz" | "forum" | "rag-test";
 }
 
 export default function ResponsiveNav({ currentPage }: ResponsiveNavProps) {

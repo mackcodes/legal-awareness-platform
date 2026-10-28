@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     # Floor on the raw dense cosine of the best hit; below it the query is treated as out of scope.
     min_relevance: float = 0.79
     rag_service_port: int = 8000
+    # Required header value for /chat when set; see DEPLOYMENT.md.
+    rag_shared_secret: str = ""
     log_path: str = "data/logs/rag_queries.jsonl"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
