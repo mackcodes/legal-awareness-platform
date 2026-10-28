@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     gemini_api_url: str = (
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
     )
-    embedding_model_name: str = "intfloat/multilingual-e5-small"
+    embedding_model_name: str = "intfloat/multilingual-e5-base"
     corpus_path: str = "data/corpus/full_corpus.json"
     corpus_version: str = "Corpus of 28 Oct 2026: COI as on 1 May 2024; Acts from India Code and Gazette prints incl. Labour Codes, MV Act, POCSO, POSH, DV Act; BPR&D IPC-BNS mapping; 34 SC judgments (S.C.R. headnotes, AWS Open Data); app-data"
     index_dir: str = "data/index"
@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     dense_weight: float = 0.6
     sparse_weight: float = 0.4
     # Floor on the raw dense cosine of the best hit; below it the query is treated as out of scope.
-    min_relevance: float = 0.79
+    min_relevance: float = 0.805
     rag_service_port: int = 8000
     # Required header value for /chat when set; see DEPLOYMENT.md.
     rag_shared_secret: str = ""
