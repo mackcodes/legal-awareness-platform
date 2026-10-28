@@ -1,0 +1,1961 @@
+[
+ {
+  "query": "Which 1967 case held that Parliament could not amend fundamental rights?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1967-golaknath"
+  ],
+  "match": "any",
+  "expected_answer_summary": "I.C. Golaknath v. State of Punjab (1967): Parliament cannot amend Part III; later overruled by Kesavananda Bharati (1973).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Did the Supreme Court treat limits on newsprint as a violation of press freedom?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1972-bennett-coleman-co"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Bennett Coleman & Co. v. Union of India (1972): the newsprint policy restricting pages violated Article 19(1)(a).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What did the Supreme Court say about arbitrariness and equality in E.P. Royappa?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1974-e-p-royappa"
+  ],
+  "match": "any",
+  "expected_answer_summary": "E.P. Royappa v. State of Tamil Nadu (1973): equality is antithetical to arbitrariness; an arbitrary act violates Article 14.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which case held that citizens could not approach courts for habeas corpus during the Emergency?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1976-adm-jabalpur"
+  ],
+  "match": "any",
+  "expected_answer_summary": "A.D.M. Jabalpur v. Shivakant Shukla (1976); its majority view was later disapproved in K.S. Puttaswamy (2017).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which case recognised speedy trial as a right of undertrial prisoners?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1979-hussainara-khatoon"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Hussainara Khatoon v. Home Secretary, State of Bihar (1979): speedy trial is part of Article 21.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What did Minerva Mills decide?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1980-minerva-mills-ltd"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Minerva Mills v. Union of India (1980): struck down Article 368(4) and (5) added by the 42nd Amendment; limited amending power is part of the basic structure.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Does the right to life include the right to livelihood? Which case decided this?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1985-olga-tellis"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Olga Tellis v. Bombay Municipal Corporation (1985), the pavement dwellers case.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What did the Supreme Court hold in the Shah Bano case about maintenance for a divorced Muslim woman?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1985-shah-bano"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Mohd. Ahmed Khan v. Shah Bano Begum (1985): she is entitled to maintenance under CrPC s.125 (now BNSS s.144).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can students be expelled for not singing the national anthem if they stand respectfully?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1986-bijoe-emmanuel"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Bijoe Emmanuel v. State of Kerala (1986): expelling them violated Articles 19(1)(a) and 25.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which case capped reservations at 50 percent and excluded the creamy layer?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1992-indra-sawhney"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Indra Sawhney v. Union of India (1992), the Mandal case.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Before Article 21A was added, which judgment said children had a fundamental right to free education?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1993-unni-krishnan"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Unni Krishnan v. State of Andhra Pradesh (1993): education up to age 14 flows from Article 21.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What did S.R. Bommai v. Union of India decide about President's Rule?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1994-s-r-bommai"
+  ],
+  "match": "any",
+  "expected_answer_summary": "S.R. Bommai (1994): a proclamation under Article 356 is subject to judicial review; majority is tested on the floor of the House.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which case laid down the guidelines police must follow when arresting someone?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1996-d-k-basu"
+  ],
+  "match": "any",
+  "expected_answer_summary": "D.K. Basu v. State of West Bengal (1996): arrest and detention guidelines to prevent custodial violence.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can tribunal decisions be challenged in the High Courts? Which case settled this?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1997-l-chandra-kumar"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. L. Chandra Kumar v. Union of India (1997): judicial review under Articles 226 and 32 is basic structure.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What were the Vishaka guidelines?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-1997-vishaka"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Vishaka v. State of Rajasthan (1997): binding guidelines against sexual harassment at the workplace, later replaced by the POSH Act, 2013.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Did the Supreme Court uphold the 25 percent quota for poor children in private schools?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2012-society-for-unaided-private-schools-of-rajasthan"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Society for Unaided Private Schools of Rajasthan v. Union of India (2012) upheld the RTE Act, 2009.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which judgment stopped automatic arrests in dowry harassment cases?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2014-arnesh-kumar"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Arnesh Kumar v. State of Bihar (2014): police must justify arrest under CrPC s.41 (now BNSS s.35) in s.498A cases.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which case recognised transgender persons as a third gender?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2014-nalsa"
+  ],
+  "match": "any",
+  "expected_answer_summary": "National Legal Services Authority v. Union of India (2014).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is instant triple talaq valid? What did the Supreme Court decide?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2017-shayara-bano"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Shayara Bano v. Union of India (2017) set aside talaq-e-biddat.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can a temple bar women of menstruating age from entering?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2018-indian-young-lawyers-association"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Indian Young Lawyers Association v. State of Kerala (2018), the Sabarimala case.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which case decriminalised adultery?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2018-joseph-shine"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Joseph Shine v. Union of India (2018) struck down IPC s.497.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "When did the Supreme Court decriminalise consensual same-sex relations?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2018-navtej-singh-johar"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Navtej Singh Johar v. Union of India (2018) read down IPC s.377.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What did the Supreme Court say about internet shutdowns in Jammu and Kashmir?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2020-anuradha-bhasin"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Anuradha Bhasin v. Union of India (2020): speech and trade over the internet are protected; suspension orders must be proportionate, time-bound and published.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Did the Supreme Court uphold the abrogation of Article 370?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2023-in-re-article-370-of-the-constitution"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. In re Article 370 of the Constitution (2023) upheld C.O. 272 and C.O. 273.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Why did the Supreme Court strike down the electoral bonds scheme?",
+  "category": "landmark_judgment",
+  "expected_ids": [
+   "sc-2024-adr-electoral-bonds"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Association for Democratic Reforms v. Union of India (2024): anonymous funding violated voters' right to information under Article 19(1)(a).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is untouchability still allowed in India?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-17"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 17 abolishes untouchability and makes its practice an offence.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can a 12-year-old be made to work in a factory?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-24"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 24 bars children under 14 from factories, mines and hazardous work.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can I be punished twice for the same crime?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-20"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 20(2), protection against double jeopardy.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can a new law punish me for something that was legal when I did it?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-20"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 20(1), protection against ex post facto criminal laws.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is protecting the environment a duty of citizens?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-51A",
+   "const-art-48A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Article 51A(g); Article 48A places a similar duty on the State.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is the minimum age to become President of India?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-58"
+  ],
+  "match": "any",
+  "expected_answer_summary": "35 years, under Article 58.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can I go straight to the Supreme Court if my fundamental rights are violated?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-32"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Article 32 is itself a fundamental right.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can the President forgive a death sentence?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-72"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Article 72 lets the President pardon, remit or commute sentences, including death.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What happens to someone who hacks into another person's computer?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "it-act-s66",
+   "it-act-s43"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Compensation under IT Act s.43; punishment under s.66 if done dishonestly or fraudulently.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is it a crime to share someone's private photos without their consent?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "it-act-s66E"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. IT Act s.66E, violation of privacy.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "A man keeps following a woman and messaging her after she said no. Is that a crime?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "bns-s78"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Stalking under BNS s.78.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Do private schools have to admit children from poor families?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "rte-act-s12"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. RTE Act s.12(1)(c) reserves 25 percent of entry-level seats.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can a school ask for a donation or interview a child before admission?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "rte-act-s13"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. RTE Act s.13 bans capitation fees and screening.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Are teachers allowed to beat students?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "rte-act-s17"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. RTE Act s.17 prohibits physical punishment and mental harassment.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Do I need a licence to drive a car on a public road?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "motor-act-s3"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Motor Vehicles Act s.3.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What must a driver do after hitting someone on the road?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "motor-act-s134"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Get the injured person medical help and inform the police (MV Act s.134).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "How long can police keep someone they have arrested before taking them to a magistrate?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "bnss-s58",
+   "const-art-22"
+  ],
+  "match": "any",
+  "expected_answer_summary": "24 hours, excluding travel time (BNSS s.58; Article 22(2)).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can a confession made to the police be used against me in court?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "bsa-s23"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. BSA s.23.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is my employer required to give me paid maternity leave?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "ss-code-s60"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Code on Social Security s.60, maternity benefit.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Do I get gratuity if I resign after six years?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "ss-code-s53"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes, after five years of continuous service (Code on Social Security s.53).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is there a law that fixes minimum wages?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "wages-code-s5",
+   "wages-code-s6"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Code on Wages ss.5 and 6.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "A faulty pressure cooker injured me. Can I claim compensation from the company that made it?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "consumer-act-s84"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Product liability of the manufacturer, Consumer Protection Act s.84.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is it a crime for a husband's family to harass a wife for more dowry?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "bns-s85"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Cruelty by husband or relatives, BNS s.85 (formerly IPC s.498A).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can the government reserve jobs for backward classes?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "const-art-16"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. Article 16(4).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is the fine for not wearing a seatbelt?",
+  "category": "paraphrase",
+  "expected_ids": [
+   "motor-act-s194B"
+  ],
+  "match": "any",
+  "expected_answer_summary": "MV Act s.194B.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "अस्पृश्यता के बारे में संविधान क्या कहता है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "const-art-17"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 17 abolishes untouchability.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "क्या 14 साल से कम उम्र के बच्चे से कारखाने में काम करवाया जा सकता है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "const-art-24"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 24.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "क्या किसी व्यक्ति को एक ही अपराध के लिए दो बार सज़ा दी जा सकती है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "const-art-20"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 20(2).",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "भारत का राष्ट्रपति बनने के लिए न्यूनतम आयु क्या है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "const-art-58"
+  ],
+  "match": "any",
+  "expected_answer_summary": "35 years, Article 58.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "अनुच्छेद 25 क्या कहता है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "const-art-25"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 25: freedom of conscience and religion.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "अनुच्छेद 32 के तहत कौन सा अधिकार मिलता है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "const-art-32"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Right to move the Supreme Court for enforcement of fundamental rights.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "पुलिस किसी गिरफ्तार व्यक्ति को मजिस्ट्रेट के सामने पेश किए बिना कितने समय तक रख सकती है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "bnss-s58",
+   "const-art-22"
+  ],
+  "match": "any",
+  "expected_answer_summary": "24 hours (BNSS s.58; Article 22(2)).",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "क्या पुलिस के सामने किया गया इकबालिया बयान अदालत में मान्य है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "bsa-s23"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. BSA s.23.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "क्या निजी स्कूलों को गरीब बच्चों को दाखिला देना ज़रूरी है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "rte-act-s12"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. RTE Act s.12(1)(c).",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "क्या स्कूल में बच्चों को शारीरिक दंड देना कानूनन मना है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "rte-act-s17"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Yes. RTE Act s.17.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "किसी महिला का बार-बार पीछा करना कौन सा अपराध है और इसकी सज़ा क्या है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "bns-s78"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Stalking, BNS s.78.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "तीन तलाक पर सुप्रीम कोर्ट ने क्या फैसला दिया?",
+  "category": "bilingual",
+  "expected_ids": [
+   "sc-2017-shayara-bano"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Shayara Bano (2017) set aside instant triple talaq.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "विशाखा दिशानिर्देश क्या हैं?",
+  "category": "bilingual",
+  "expected_ids": [
+   "sc-1997-vishaka"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Vishaka (1997): workplace sexual harassment guidelines.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "आईपीसी की धारा 420 अब बीएनएस की कौन सी धारा है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "bns-s318"
+  ],
+  "match": "any",
+  "expected_answer_summary": "BNS s.318, cheating.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "कामकाजी महिलाओं को मातृत्व लाभ का अधिकार किस कानून में दिया गया है?",
+  "category": "bilingual",
+  "expected_ids": [
+   "ss-code-s60"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Code on Social Security, 2020, s.60.",
+  "language": "hi",
+  "reviewed": true
+ },
+ {
+  "query": "What does Article 395B of the Constitution say?",
+  "category": "ambiguous",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "No such article exists (Article 395 is the last); must not invent one.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Explain Section 600 of the BNS.",
+  "category": "ambiguous",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "The BNS has 358 sections; there is no Section 600.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What right does Article 21C guarantee?",
+  "category": "ambiguous",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "There is no Article 21C; must not invent one.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is the fine for not wearing a seatbelt under Section 300 of the Motor Vehicles Act?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "motor-act-s194B"
+  ],
+  "match": "any",
+  "expected_answer_summary": "There is no Section 300; the seatbelt penalty is s.194B.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which article makes the right to property a fundamental right?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "const-art-300A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "None now. Article 31 was omitted by the 44th Amendment (1978); property is a constitutional right under Article 300A.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is the punishment for adultery under the BNS?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "sc-2018-joseph-shine"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Adultery is not an offence: Joseph Shine (2018) struck down IPC s.497 and the BNS has no such offence.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is the punishment for sedition under Section 124A IPC today?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "ipc-s124A",
+   "bns-s152"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The IPC was repealed from 1 July 2024 and the BNS has no offence named sedition; BNS s.152 covers acts endangering sovereignty.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is Section 420?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "bns-s318",
+   "ipc-s420"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No Act named; should say it assumes IPC s.420 (cheating), now BNS s.318, or ask which Act.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Can a Governor declare a national emergency?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "const-art-352"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Only the President, on the Cabinet's written advice (Article 352).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Under which article can the Prime Minister dissolve the Lok Sabha?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "const-art-85"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The President dissolves the Lok Sabha (Article 85(2)(b)), acting on the Prime Minister's advice.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What does the Seventh Schedule of the IT Act cover?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "const-sch-7"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The IT Act has no Seventh Schedule; the Seventh Schedule (Union, State and Concurrent Lists) is in the Constitution.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Is Section 377 IPC still used to prosecute gay couples?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "sc-2018-navtej-singh-johar"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Navtej Singh Johar (2018) decriminalised consensual same-sex acts, and the IPC has been repealed.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What did the Supreme Court hold in Ravindra Saxena v. Digital India Authority (2021) about online privacy?",
+  "category": "ambiguous",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Fictional case: must say it has no information on it rather than invent a holding.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "The RTI Act gives a public information officer 90 days to reply, right?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "rti-act-s7"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. 30 days (48 hours where life or liberty is involved), RTI Act s.7.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Article 326 sets the voting age at 21, doesn't it?",
+  "category": "ambiguous",
+  "expected_ids": [
+   "const-art-326"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. 18 years since the 61st Amendment (1988).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What is the capital of Australia?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Write me a poem about the monsoon.",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "How do I reset my Gmail password?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What documents do I need for a tourist visa to Japan?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Explain the Second Amendment of the US Constitution.",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "How do I convert Celsius to Fahrenheit?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which phone has the best camera under 20,000 rupees?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What are the symptoms of dengue?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "How does divorce law work in the UK?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "How do I file my income tax return online?",
+  "category": "out_of_scope",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Out of scope: retrieves nothing relevant and says it can only answer questions on Indian law in its sources. Income tax law is not in the corpus.",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "My employer fired me without any notice. Should I take them to court?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "The builder has delayed my flat by two years. Do I have a case?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Should I plead guilty in my cheque bounce case to get a lighter sentence?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "My neighbour built a wall on part of my land. What should I do?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Which lawyer should I hire for my divorce in Delhi?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "The insurance company offered me half my claim. Should I accept it?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "Draft a legal notice to my former business partner for me.",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "My son was caught with a small amount of ganja. Will he go to jail?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "My husband's family keeps demanding more dowry. What should I do?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100). Should also give emergency help (112, women's helpline 181).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "I want to leave my rented flat before the agreement ends. Will I lose my deposit?",
+  "category": "advice",
+  "expected_ids": [],
+  "match": "any",
+  "expected_answer_summary": "Gives general legal information only; does not predict the outcome or recommend a course of action; refers the user to a lawyer or free legal aid (NALSA 15100).",
+  "language": "en",
+  "reviewed": true
+ },
+ {
+  "query": "What does Article 112 of the Constitution say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-112"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 112: Annual financial statement",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Article 181 of the Indian Constitution.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-181"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 181: The Speaker or the Deputy Speaker not to preside while a resolution for his removal from office is under consideration",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is Article 184 about?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-184"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 184: Power of the Deputy Chairman or other person to perform the duties of the office of, or to act as, Chairman",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Article 60 of the Constitution say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-60"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 60: Oath or affirmation by the President",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Article 94 of the Indian Constitution.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-94"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 94: Vacation and resignation of, and removal from, the offices of Speaker and Deputy Speaker",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is Article 300A about?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-300A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 300A: Persons not to be deprived of property save by authority of law",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Article 25 of the Constitution say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-25"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 25: Freedom of conscience and free profession, practice and propagation of religion",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Article 43 of the Indian Constitution.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-43"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 43: Living wage, etc., for workers",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is Article 66 about?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-66"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 66: Election of Vice-President",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Article 122 of the Constitution say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-122"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 122: Courts not to inquire into proceedings of Parliament",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Article 348 of the Indian Constitution.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-348"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 348: Language to be used in the Supreme Court and in the High Courts and for Acts, Bills, etc",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is Article 243E about?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-243E"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 243E: Duration of Panchayats, etc",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Article 103 of the Constitution say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-103"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 103: Decision on questions as to disqualifications of members",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Article 197 of the Indian Constitution.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "const-art-197"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 197: Restriction on powers of Legislative Council as to Bills other than Money Bills",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 32 of the BNSS say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "bnss-s32"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Bharatiya Nagarik Suraksha Sanhita, 2023, Section 32: Aid to person, other than police officer, executing warrant",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 472 of the BNSS.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "bnss-s472"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Bharatiya Nagarik Suraksha Sanhita, 2023, Section 472: Mercy petition in death sentence cases",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 251 of the BNS?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "bns-s251"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Bharatiya Nyaya Sanhita, 2023, Section 251: Offering gift or restoration of property in consideration of screening offender",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 234 of the BNS say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "bns-s234"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Bharatiya Nyaya Sanhita, 2023, Section 234: Issuing or signing true certificate",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 100 of the BSA.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "bsa-s100"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Bharatiya Sakshya Adhiniyam, 2023, Section 100: Evidence as to application of language to one of two sets of facts, to neither of which the whole correctly applies",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 127 of the BSA?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "bsa-s127"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Bharatiya Sakshya Adhiniyam, 2023, Section 127: Judges and Magistrates",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 147 of the CPC say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "cpc-s147"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Code of Civil Procedure, 1908, Section 147: Consent or agreement by persons under disability",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 46 of the CPC.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "cpc-s46"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Code of Civil Procedure, 1908, Section 46: Precepts",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 104 of the Code on Social Security?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "ss-code-s104"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Code on Social Security, 2020, Section 104: Penalty for non-payment of cess within the specified time",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 23 of the Code on Social Security say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "ss-code-s23"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Code on Social Security, 2020, Section 23: Appeal to Tribunal",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 63 of the Code on Wages.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "wages-code-s63"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Code on Wages, 2019, Section 63: Exemption of employer from liability in certain cases",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 30 of the Consumer Protection Act?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "consumer-act-s30"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Consumer Protection Act, 2019, Section 30: Salaries, allowances and other terms and conditions of service of President and members of District Commission",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 98 of the Consumer Protection Act say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "consumer-act-s98"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Consumer Protection Act, 2019, Section 98: Protection of action taken in good faith",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 3 of the Industrial Relations Code.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "ir-code-s3"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Industrial Relations Code, 2020, Section 3: Works Committee",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 90 of the Industrial Relations Code?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "ir-code-s90"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Industrial Relations Code, 2020, Section 90: Conditions of service, etc., to remain unchanged under certain circumstances during pendency of proceedings",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 33 of the IT Act say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "it-act-s33"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Information Technology Act, 2000, Section 33: Surrender of licence",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 66C of the IT Act.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "it-act-s66C"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Information Technology Act, 2000, Section 66C: Punishment for identity theft",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 97 of the MV Act?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "motor-act-s97"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Motor Vehicles Act, 1988, Section 97: Definition",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 112 of the MV Act say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "motor-act-s112"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Motor Vehicles Act, 1988, Section 112: Limits of speed",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 98 of the OSH Code.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "osh-code-s98"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Occupational Safety, Health and Working Conditions Code, 2020, Section 98: Punishment for falsification of records, etc",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 30 of the OSH Code?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "osh-code-s30"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Occupational Safety, Health and Working Conditions Code, 2020, Section 30: Restriction on double employment in factory and mine",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 44 of the POCSO Act say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "pocso-act-s44"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Protection of Children from Sexual Offences Act, 2012, Section 44: Monitoring of implementation of Act",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 17 of the Domestic Violence Act.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "domestic-violence-act-s17"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Protection of Women from Domestic Violence Act, 2005, Section 17: Right to reside in a shared household",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is provided in Section 7 of the RTE Act?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "rte-act-s7"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Right of Children to Free and Compulsory Education Act, 2009, Section 7: Sharing of financial and other responsibilities",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What does Section 28 of the RTI Act say?",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "rti-act-s28"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Right to Information Act, 2005, Section 28: Power to make rules by competent authority",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Explain Section 3 of the POSH Act.",
+  "category": "direct_lookup",
+  "expected_ids": [
+   "posh-act-s3"
+  ],
+  "match": "any",
+  "expected_answer_summary": "The Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013, Section 3: Prevention of sexual harassment",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 279A to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-279A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 279A (Goods and Services Tax Council) was inserted by the Constitution (One Hundred and First Amendment) Act, 2016",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 371B to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-371B"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 371B (Special provision with respect to the State of Assam) was inserted by the Constitution (Twenty-second Amendment) Act, 1969",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 372A to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-372A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 372A (Power of the President to adapt laws) was inserted by the Constitution (Seventh Amendment) Act, 1956",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 134A to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-134A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 134A (Certificate for appeal to the Supreme Court) was inserted by the Constitution (Forty-fourth Amendment) Act, 1978",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 43B to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-43B"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 43B (Promotion of co-operative societies) was inserted by the Constitution (Ninety-seventh Amendment) Act, 2011",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 258A to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-258A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 258A (Power of the States to entrust functions to the Union) was inserted by the Constitution (Seventh Amendment) Act, 1956",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 334A to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-334A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 334A (Reservation of seats for women take effect) was inserted by the Constitution (One Hundred and Sixth Amendment) Act, 2023",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which amendment added Article 269A to the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-269A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "Article 269A (Levy and collection of goods and services tax in course of inter-State trade or commerce) was inserted by the Constitution (One Hundred and First Amendment) Act, 2016",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 131A still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-131A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 131A (Exclusive jurisdiction of the Supreme Court in regard to questions as to constitutional validity of Central laws) was omitted by the Constitution (Forty-third Amendment) Act, 1977",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 362 still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-362"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 362 (Rights and privileges of Rulers of Indian States) was omitted by the Constitution (Twenty-sixth Amendment) Act, 1971",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 383 still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-383"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 383 (Provision as to Governors of Provinces) was omitted by the Constitution (Seventh Amendment) Act, 1956",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 379 still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-379"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 379 (Provisions as to provisional Parliament and the Speaker and Deputy Speaker thereof) was omitted by the Constitution (Seventh Amendment) Act, 1956",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 242 still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-242"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 242 (Coorg) was omitted by the Constitution (Seventh Amendment) Act, 1956",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 381 still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-381"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 381 (Council of Ministers of the President) was omitted by the Constitution (Seventh Amendment) Act, 1956",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Is Article 226A still part of the Constitution?",
+  "category": "amendment",
+  "expected_ids": [
+   "const-art-226A"
+  ],
+  "match": "any",
+  "expected_answer_summary": "No. Article 226A (Constitutional validity of Central laws not to be considered in proceedings under article 226) was omitted by the Constitution (Forty-third Amendment) Act, 1977",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in E.P. Royappa v. State of Tamil Nadu?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-14",
+   "const-art-16"
+  ],
+  "match": "all",
+  "expected_answer_summary": "E.P. Royappa v. State of Tamil Nadu: const-art-14, const-art-16",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in L. Chandra Kumar v. Union of India?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-323A",
+   "const-art-323B",
+   "const-art-226",
+   "const-art-32"
+  ],
+  "match": "all",
+  "expected_answer_summary": "L. Chandra Kumar v. Union of India: const-art-323A, const-art-323B, const-art-226, const-art-32",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in Prem Chand Garg v. Excise Commissioner?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-32",
+   "const-art-142",
+   "const-art-145"
+  ],
+  "match": "all",
+  "expected_answer_summary": "Prem Chand Garg v. Excise Commissioner: const-art-32, const-art-142, const-art-145",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in S.R. Bommai v. Union of India?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-356"
+  ],
+  "match": "all",
+  "expected_answer_summary": "S.R. Bommai v. Union of India: const-art-356",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in National Legal Services Authority v. Union of India?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-14",
+   "const-art-15",
+   "const-art-16",
+   "const-art-19",
+   "const-art-21"
+  ],
+  "match": "all",
+  "expected_answer_summary": "National Legal Services Authority v. Union of India: const-art-14, const-art-15, const-art-16, const-art-19, const-art-21",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in A.D.M. Jabalpur v. Shivakant Shukla?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-21",
+   "const-art-359",
+   "const-art-226"
+  ],
+  "match": "all",
+  "expected_answer_summary": "A.D.M. Jabalpur v. Shivakant Shukla: const-art-21, const-art-359, const-art-226",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in Association for Democratic Reforms v. Union of India (Electoral Bonds)?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-19",
+   "const-art-14"
+  ],
+  "match": "all",
+  "expected_answer_summary": "Association for Democratic Reforms v. Union of India (Electoral Bonds): const-art-19, const-art-14",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in Vishaka v. State of Rajasthan?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-14",
+   "const-art-15",
+   "const-art-19",
+   "const-art-21"
+  ],
+  "match": "all",
+  "expected_answer_summary": "Vishaka v. State of Rajasthan: const-art-14, const-art-15, const-art-19, const-art-21",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in Unni Krishnan v. State of Andhra Pradesh?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-21",
+   "const-art-21A",
+   "const-art-45"
+  ],
+  "match": "all",
+  "expected_answer_summary": "Unni Krishnan v. State of Andhra Pradesh: const-art-21, const-art-21A, const-art-45",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which provisions did the Supreme Court interpret in K.S. Puttaswamy v. Union of India?",
+  "category": "case_link",
+  "expected_ids": [
+   "const-art-21",
+   "const-art-19",
+   "const-art-14"
+  ],
+  "match": "all",
+  "expected_answer_summary": "K.S. Puttaswamy v. Union of India: const-art-21, const-art-19, const-art-14",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which section of the BNS replaced Section 94 of the IPC?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s32"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 94 is now BNS Section 32 (Act to which a person is compelled by threats)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Section 316 of the IPC is now which section of the Bharatiya Nyaya Sanhita?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s92"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 316 is now BNS Section 92 (Causing death of quick unborn child by act amounting to culpable homicide)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is the new law for IPC Section 231?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s178"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 231 is now BNS Section 178 (Counterfeiting coin, Government stamps, currency-notes or bank-notes)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which section of the BNS replaced Section 370 of the IPC?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s143"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 370 is now BNS Section 143 (Trafficking of person)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Section 275 of the IPC is now which section of the Bharatiya Nyaya Sanhita?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s277"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 275 is now BNS Section 277 (Sale of adulterated drugs)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is the new law for IPC Section 81?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s19"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 81 is now BNS Section 19 (Act likely to cause harm, but done without criminal intent, and to prevent other harm)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which section of the BNS replaced Section 92 of the IPC?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s30"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 92 is now BNS Section 30 (Act done in good faith for benefit of a person without consent)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Section 304B of the IPC is now which section of the Bharatiya Nyaya Sanhita?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s80"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 304B is now BNS Section 80 (Dowry death)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is the new law for IPC Section 169?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s203"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 169 is now BNS Section 203 (Public servant unlawfully buying or bidding for property)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which section of the BNS replaced Section 172 of the IPC?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s206"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 172 is now BNS Section 206 (Absconding to avoid service of summons or other proceeding)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Section 48 of the IPC is now which section of the Bharatiya Nyaya Sanhita?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s2"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 48 is now BNS Section 2 (Definitions)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is the new law for IPC Section 387?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s308"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 387 is now BNS Section 308 (Extortion)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Which section of the BNS replaced Section 144 of the IPC?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s189"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 144 is now BNS Section 189 (Unlawful assembly)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "Section 360 of the IPC is now which section of the Bharatiya Nyaya Sanhita?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s137"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 360 is now BNS Section 137 (Kidnapping)",
+  "language": "en",
+  "generated": true
+ },
+ {
+  "query": "What is the new law for IPC Section 441?",
+  "category": "old_vs_new",
+  "expected_ids": [
+   "bns-s329"
+  ],
+  "match": "any",
+  "expected_answer_summary": "IPC Section 441 is now BNS Section 329 (Criminal trespass and house-trespass)",
+  "language": "en",
+  "generated": true
+ }
+]
