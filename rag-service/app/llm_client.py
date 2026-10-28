@@ -31,21 +31,23 @@ def _retry_delay(response: requests.Response) -> Optional[float]:
     return float(match.group(1)) if match else None
 
 
-def generate_answer(prompt: str) -> Generation:
+def generate_answer(prompt: str, deterministic: bool = True) -> Generation:
     """Deterministic Gemini call: temperature 0 and no thinking budget, so repeated runs of the
-    evaluation give comparable answers (Gemini 2.5 Flash otherwise thinks for a variable time)."""
+    evaluation give comparable answers (Gemini 2.5 Flash otherwise thinks for a variable time).
+    deterministic=False sends Gemini's defaults, as the production chatbot does (System A)."""
     if not settings.gemini_api_key:
         raise LlmGenerationError("GEMINI_API_KEY is not configured.")
+
+    body: dict = {"contents": [{"parts": [{"text": prompt}]}]}
+    if deterministic:
+        body["generationConfig"] = {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}}
 
     def call() -> requests.Response:
         try:
             return requests.post(
                 settings.gemini_api_url,
                 headers={"x-goog-api-key": settings.gemini_api_key},
-                json={
-                    "contents": [{"parts": [{"text": prompt}]}],
-                    "generationConfig": {"temperature": 0, "thinkingConfig": {"thinkingBudget": 0}},
-                },
+                json=body,
                 timeout=30,
             )
         except requests.Timeout:

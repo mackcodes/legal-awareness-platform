@@ -47,18 +47,22 @@ def build_grounded_prompt(
     audience_level: str = "citizen",
     personal_situation: bool = False,
     practical_tips: bool = True,
+    use_audience: bool = True,
 ) -> Tuple[str, List[Dict[str, Any]]]:
     """The shared base prompt plus the retrieved official sources and the rules for using them.
-    Returns the prompt with the numbered sources, so the answer's [S#] tags can be mapped back."""
+    Returns the prompt with the numbered sources, so the answer's [S#] tags can be mapped back.
+    use_audience=False (Systems B-D) drops the audience instruction and the plain-language summaries."""
     sources = number_sources(retrieved_chunks)
     if not sources:
         context_block = "No relevant official source was found for this question."
     else:
         # Non-specialist audiences also get the plain-language summary.
-        show_simplified = audience_level != "law_student"
+        show_simplified = use_audience and audience_level != "law_student"
         context_block = "\n\n".join(_source_block(s, show_simplified) for s in sources)
 
-    audience_note = AUDIENCE_INSTRUCTIONS.get(audience_level, AUDIENCE_INSTRUCTIONS["citizen"])
+    audience_note = (
+        f"\n- {AUDIENCE_INSTRUCTIONS.get(audience_level, AUDIENCE_INSTRUCTIONS['citizen'])}" if use_audience else ""
+    )
     situation_note = (
         "\n- The user is asking about their own situation. Explain the law and the rights that apply in general "
         "terms. Do not tell them what to do, whether to take legal action, or how their case will turn out: say "
@@ -100,8 +104,7 @@ These are official, current legal texts retrieved for the question below. Each h
 {tips_rule}
 - A source marked OMITTED or REPEALED is not current law: say so, and point to its replacement if a source names one.
 - Mention the date a text is current to ("as on ...") where the source gives one.
-- If the sources do not answer the question, say so plainly instead of guessing{tips_fallback}.
-- {audience_note}{situation_note}
+- If the sources do not answer the question, say so plainly instead of guessing{tips_fallback}.{audience_note}{situation_note}
 
 ## ANSWER STRUCTURE
 1. A direct answer in one or two plain sentences.

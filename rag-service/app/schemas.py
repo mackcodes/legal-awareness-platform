@@ -17,6 +17,7 @@ class ChatRequest(BaseModel):
     use_dense: bool = True  # False: sparse only (the out-of-scope floor still applies)
     use_sparse: bool = True  # False: System B, dense only
     use_reranker: bool = False  # True: Systems D and E, cross-encoder reranking of the hybrid results
+    use_audience: bool = True  # False: Systems B-D, no audience instruction or plain-language summaries
     use_case_links: bool = True  # False: System E-links, no provisions added from case links
     practical_tips: bool = True  # False: System E-strict, no untagged tips from the model's own knowledge
 
@@ -46,4 +47,7 @@ class ChatResponse(BaseModel):
     retrieved_chunks: List[RetrievedChunk] = []
     intent: Intent = "UNKNOWN"
     latency_ms: int = 0
+    model_version: Optional[str] = None
+    prompt_tokens: Optional[int] = None
+    output_tokens: Optional[int] = None
     error: Optional[str] = None

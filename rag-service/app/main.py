@@ -114,6 +114,7 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
         "use_dense": request.use_dense,
         "use_sparse": request.use_sparse,
         "use_reranker": request.use_reranker,
+        "use_audience": request.use_audience,
         "use_case_links": request.use_case_links,
         "practical_tips": request.practical_tips,
         "corpus_version": settings.corpus_version,
@@ -148,6 +149,7 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
         audience_level=request.audience_level,
         personal_situation=personal_situation,
         practical_tips=request.practical_tips,
+        use_audience=request.use_audience,
     )
 
     generation = None
@@ -197,5 +199,8 @@ def chat(request: ChatRequest, x_rag_secret: str | None = Header(default=None)) 
         retrieved_chunks=retrieved_chunks,
         intent=intent,
         latency_ms=latency_ms,
+        model_version=generation.model_version if generation else None,
+        prompt_tokens=generation.prompt_tokens if generation else None,
+        output_tokens=generation.output_tokens if generation else None,
         error=error,
     )
